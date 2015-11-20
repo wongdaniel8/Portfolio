@@ -1,0 +1,258 @@
+package jump61;
+
+import static jump61.Side.*;
+import static jump61.Square.square;
+import java.util.ArrayList;
+import java.util.Stack;
+
+/** A Jump61 board state that may be modified.
+ *  @author Daniel Wong
+ */
+class MutableBoard extends Board {
+
+    /** 2D array of Squares that will represent my board. */
+    private Square[][] _squares;
+    /** Stack for the purpose of undoing moves. */
+    private Stack<MutableBoard> _stack = new Stack<MutableBoard>();
+
+    /** An N x N board in initial configuration. */
+    MutableBoard(int N) {
+        _squares = new Square[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                _squares[i][j] = Square.square(Side.WHITE, 1);
+            }
+        }
+    }
+
+    /** A board whose initial contents are copied from BOARD0, but whose
+     *  undo history is clear. */
+    MutableBoard(Board board0) {
+        _stack = new Stack<MutableBoard>();
+        _squares = new Square[board0.size()][board0.size()];
+        for (int i = 1; i < board0.size() + 1; i++) {
+            for (int j = 1; j < board0.size() + 1; j++) {
+                Square sq = board0.get(i, j);
+                _squares[i - 1][j - 1] = sq;
+            }
+        }
+    }
+
+    @Override
+    void clear(int N) {
+        announce();
+        _stack = new Stack<MutableBoard>();
+        _squares = new Square[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                _squares[i][j] = Square.square(Side.WHITE, 1);
+            }
+        }
+    }
+
+    @Override
+    void copy(Board board) {
+        markUndo();
+        for (int i = 1; i < board.size() + 1; i++) {
+            for (int j = 1; j < board.size() + 1; j++) {
+                Square sq = board.get(i, j);
+                _squares[i - 1][j - 1] = sq;
+            }
+        }
+    }
+
+    /** Copy the contents of BOARD into me, without modifying my undo
+     *  history.  Assumes BOARD and I have the same size. */
+    private void internalCopy(MutableBoard board) {
+        for (int i = 1; i < board.size() + 1; i++) {
+            for (int j = 1; j < board.size() + 1; j++) {
+                Square sq = board.get(i, j);
+                _squares[i - 1][j - 1] = sq;
+            }
+        }
+
+    }
+
+    @Override
+    int size() {
+        return _squares.length;
+    }
+
+    @Override
+    Square get(int n) {
+        return _squares[row(n) - 1][col(n) - 1];
+    }
+
+    @Override
+    int numOfSide(Side side) {
+        int count = 0;
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                if (_squares[i][j].getSide() == side) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    @Override
+    int numPieces() {
+        int count = 0;
+        for (int i = 1; i < size() + 1; i++) {
+            for (int j = 1; j < size() + 1; j++) {
+                Square sq = get(i, j);
+                count += sq.getSpots();
+            }
+        }
+        return count;
+    }
+
+    /** Return an ArrayList of int[] that corresponds to valid neighbors of
+     * square at R, C. My method. */
+    ArrayList<int[]> getValidNeighborCoords(int r, int c) {
+        int[] a = new int[2]; int[] b = new int[2];
+        int[] x = new int[2]; int[] d = new int[2];
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        if (r - 1 >= 1) {
+            a[0] = r - 1;
+            a[1] = c;
+            answer.add(((int[]) a));
+        }
+        if (r + 1 <= size()) {
+            b[0] = r + 1;
+            b[1] = c;
+            answer.add(((int[]) b));
+        }
+        if (c - 1 >= 1) {
+            d[0] = r;
+            d[1] = c - 1;
+            answer.add(((int[]) d));
+        }
+        if (c + 1 <= size()) {
+            x[0] = r;
+            x[1] = c + 1;
+            answer.add(((int[]) x));
+        }
+        return answer;
+    }
+
+    /** Represents whether or not board is overflowing. */
+    private boolean overflow = false;
+
+    @Override
+    void addSpot(Side player, int r, int c) {
+        announce();
+        if (!overflow) {
+            markUndo();
+        }
+        int spotsAlreadyThere = get(r, c).getSpots();
+        if (spotsAlreadyThere == neighbors(r, c)) {
+            overflow = true;
+            Square replacement = Square.square(player,
+                spotsAlreadyThere + 1 - neighbors(r, c));
+            _squares[r - 1][c - 1] = replacement;
+            ArrayList<int[]> validNeighborCoords = getValidNeighborCoords(r, c);
+            for (int[] a : validNeighborCoords) {
+                addSpot(player, a[0], a[1]);
+                if (numOfSide(player) == size() * size()) {
+                    return;
+                }
+            }
+            overflow = false;
+        } else {
+            Square newSquare = Square.square(player, spotsAlreadyThere + 1);
+            _squares[r - 1][c - 1] = newSquare;
+        }
+    }
+
+    @Override
+    void addSpot(Side player, int n) {
+        announce();
+        if (!overflow) {
+            markUndo();
+        }
+        int r = row(n);
+        int c = col(n);
+        int spotsAlreadyThere = get(r, c).getSpots();
+        if (spotsAlreadyThere == neighbors(r, c)) {
+            overflow = true;
+            Square replacement = Square.square(player,
+                spotsAlreadyThere + 1 - neighbors(r, c));
+            _squares[r - 1][c - 1] = replacement;
+            ArrayList<int[]> validNeighborCoords = getValidNeighborCoords(r, c);
+            for (int[] a : validNeighborCoords) {
+                addSpot(player, a[0], a[1]);
+                if (numOfSide(player) == size() * size()) {
+                    return;
+                }
+            }
+            overflow = false;
+        } else {
+            Square newSquare = Square.square(player, spotsAlreadyThere + 1);
+            _squares[r - 1][c - 1] = newSquare;
+        }
+    }
+
+    @Override
+    void set(int r, int c, int num, Side player) {
+        internalSet(sqNum(r, c), square(player, num));
+    }
+
+    @Override
+    void set(int n, int num, Side player) {
+        internalSet(n, square(player, num));
+        announce();
+    }
+
+    @Override
+    void undo() {
+        internalCopy(_stack.pop());
+    }
+
+    /** Record the beginning of a move in the undo history. */
+    private void markUndo() {
+        MutableBoard oldState = new MutableBoard(this);
+        _stack.push(oldState);
+    }
+
+    /** Set the contents of the square with index IND to SQ. Update counts
+     *  of numbers of squares of each color.  */
+    private void internalSet(int ind, Square sq) {
+        int row = row(ind);
+        int col = col(ind);
+        _squares[row - 1][col - 1] = sq;
+    }
+
+    /** Notify all Observers of a change. */
+    private void announce() {
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MutableBoard)) {
+            return obj.equals(this);
+        } else {
+            if (((MutableBoard) obj).size() != this.size()) {
+                return false;
+            }
+            for (int i = 1; i < size() + 1; i++) {
+                for (int j = 1; j < size() + 1; j++) {
+                    if (!this.get(i, j).
+                        equals(((MutableBoard) obj).get(i, j))) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+}

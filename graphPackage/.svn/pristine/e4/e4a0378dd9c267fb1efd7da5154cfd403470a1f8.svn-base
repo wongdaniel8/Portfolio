@@ -1,0 +1,82 @@
+package graph;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.Queue;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+
+
+/** Unit tests for the ShortestPaths class.
+ *  @author Daniel Wong
+ */
+
+public class ShortestPathsTest {
+    /*
+    @Test
+    public void testSetUp() {
+    	UndirectedGraph g = new UndirectedGraph();
+    	LabeledGraph<Integer, Double> _LG = 
+		new LabeledGraph<Integer, Double>(g);
+		_LG.add(0); _LG.add(Integer.MAX_VALUE); 
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE);
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE);
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE);
+		
+		_LG.add(1, 3, new Double (5)); _LG.add(1, 7, new Double (7)); _LG.add(1, 2, new Double (2));
+		_LG.add(1, 4, new Double (3)); _LG.add(7, 4, new Double (3)); _LG.add(7, 8, new Double (1));
+		_LG.add(4, 2, new Double (5)); _LG.add(4, 8, new Double (6)); _LG.add(4, 5, new Double (4));
+		_LG.add(2, 3, new Double (4)); _LG.add(2, 5, new Double (3)); _LG.add(1, 3, new Double (5));
+		_LG.add(3, 6, new Double (2)); _LG.add(5, 6, new Double (1)); _LG.add(5, 8, new Double (2));
+		myPath p = new myPath(_LG, 1, 6);
+		p.setPaths();
+		assertEquals(p.getWeight(1, 7), 7, .01);
+		assertEquals(p.getWeight(1), 0, .01);
+		ArrayList<Integer> pathToSix = (ArrayList<Integer>) p.pathTo(6);
+		System.out.println("path to six: ");
+		for (Integer i : pathToSix) {
+			System.out.print(i);
+		}
+    } 
+    */
+	
+    @Test
+    public void testSetUp2() {
+    	DirectedGraph g = new DirectedGraph();
+    	//UndirectedGraph g = new UndirectedGraph();
+    	LabeledGraph<Integer, Double> _LG = 
+		new LabeledGraph<Integer, Double>(g);
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE); 
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE);
+		_LG.add(Integer.MAX_VALUE); _LG.add(Integer.MAX_VALUE);
+
+		_LG.add(1, 2, new Double (1)); _LG.add(1, 4, new Double (10));
+		_LG.add(2, 5, new Double (2)); _LG.add(2, 3, new Double (5));
+		_LG.add(1, 3, new Double (3)); _LG.add(3, 5, new Double (2));
+		_LG.add(5, 6, new Double (3));
+		myPath p = new myPath(_LG, 1, 6);
+		p.setPaths();
+		ArrayList<Integer> pathToSix = (ArrayList<Integer>) p.pathTo(6);
+		assertEquals(pathToSix.size(), 4, .01);
+		System.out.println("path to six: ");
+		for (Integer i : pathToSix) {
+			System.out.print(i);
+		}
+
+    }
+
+   
+	private class myPath extends SimpleShortestPaths {
+		myPath(Graph G, int source, int destination) {
+			super(G, source, destination);
+			_LG = (LabeledGraph<Integer, Double>) G;
+		}
+
+		@Override
+		protected double getWeight(int u, int v) {
+			return _LG.getLabel(u, v);
+		}
+		private LabeledGraph<Integer, Double> _LG;
+	}
+
+}

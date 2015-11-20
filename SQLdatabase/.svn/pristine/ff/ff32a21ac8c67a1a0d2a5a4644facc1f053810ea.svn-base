@@ -1,0 +1,36 @@
+package db61b;
+import org.junit.Test;
+import java.util.HashSet;
+import java.util.ArrayList;
+import static org.junit.Assert.*;
+
+public class TestPart2 {
+	@Test 
+	public void testConditions() {
+		String[] cols = {"name", "SID", "age", "height", "major"};
+		Table t = new Table(cols);
+		String[] vals = {"Daniel", "24199291", "19", "tall", "MCB/CS"};
+		String[] vals2 = {"Herb420", "1234578", "18", "short", "EECS"};
+		String[] vals3 = {"Kai", "0234578", "20", "short", "Music/EthnicStudies"};
+		Row r1 = new Row(vals);
+		Row r2 = new Row(vals2);
+		Row r3 = new Row(vals3);
+		t.add(r1);
+		t.add(r2);
+		t.add(r3);
+
+		Column c = new Column("height", t);
+		
+		ArrayList<Condition> conditions = new ArrayList<Condition>();
+		Condition cond = new Condition(c, "=", "short");
+		conditions.add(cond);
+		ArrayList<String> selectedCols = new ArrayList<String>();
+		selectedCols.add("height");
+
+		t.select(selectedCols, conditions).print();
+
+	}
+	public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestPart2.class));
+    }
+}

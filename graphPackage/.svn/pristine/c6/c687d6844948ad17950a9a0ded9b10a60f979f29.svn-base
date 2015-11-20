@@ -1,0 +1,212 @@
+package graph;
+
+import java.util.HashSet; //
+import java.util.HashMap;
+import java.util.LinkedList;
+
+/* See restrictions in Graph.java. */
+
+/** A partial implementation of Graph containing elements common to
+ *  directed and undirected graphs.
+ *
+ *  @author
+ */
+abstract class GraphObj extends Graph {
+
+    /** A new, empty Graph. */
+    GraphObj() {
+        // FIXME
+        _vertices = new HashMap<Integer, LinkedList<Integer>>();
+    }
+
+    @Override
+    public int vertexSize() {
+        // FIXME
+        return _vertices.size();
+    }
+
+    @Override
+    public int maxVertex() {
+        // FIXME
+        int max = 0;
+        for (Integer i : _vertices.keySet()) { //but what if i have redundant keys?
+                                                //i.e. two vertices with same value? will they stay? 
+            if (i > max) {
+                max = i;
+            }
+        }
+        return max;
+    }
+
+    @Override
+    public int edgeSize() {
+        // FIXME
+        return 0;
+    }
+
+    @Override
+    public abstract boolean isDirected();
+
+    @Override
+    public int outDegree(int v) {
+        // FIXME
+        return _vertices.get(v).size();
+    }
+
+    @Override
+    public abstract int inDegree(int v);
+
+    @Override
+    public boolean contains(int u) {
+        // FIXME
+        //return false;
+        return _vertices.containsKey(u);
+    }
+
+    @Override
+    public boolean contains(int u, int v) {
+        // FIXME
+        //return false;
+        LinkedList<Integer> pointer = _vertices.get(u);
+        for (Integer i : pointer) {
+            if (v == i) { //should I use == or .equals?
+                return true; //Integer is an object so...
+            } 
+        }
+        return false;
+    }
+
+    @Override
+    public int add() {
+        // FIXME
+        int i = 1;
+        while (true) {
+            if (!contains(i)) {
+                LinkedList<Integer> myList = new LinkedList<Integer>();
+                _vertices.put(i, myList);
+                break;
+            } else {
+                i++;
+            }
+        }
+        return i;
+    }
+
+    @Override
+    public int add(int u, int v) {
+        // FIXME
+        if (contains(u, v)) {
+            return u;
+        } else {
+            _vertices.get(u).add(v);
+            _vertices.get(v).add(u);
+        }
+        return u;
+    }
+
+    @Override
+    public void remove(int v) {
+        // FIXME
+        _vertices.remove(v);
+    }
+
+    @Override
+    public void remove(int u, int v) {
+        // FIXME
+        if (contains(u, v)) {
+            _vertices.get(u).remove((Integer) v);
+            _vertices.get(v).remove((Integer) u);
+        }
+    }
+
+    @Override
+    public Iteration<Integer> vertices() {
+        // FIXME
+        return null;
+    }
+
+    @Override
+    public int successor(int v, int k) {
+        // FIXME
+        //is successor like a child, or like levels of a graph?
+        //if we have a graph 1-2-3-4 is the 
+        //the second successor of vertex 1 equal to vertex 4? 
+        if (k > _vertices.get(v).size() - 1) {
+            return 0;
+        } else {
+            return _vertices.get(v).remove(k);
+        }
+    }
+
+    @Override
+    public abstract int predecessor(int v, int k);
+
+    @Override
+    public Iteration<Integer> successors(int v) {
+        // FIXME
+        return null;
+    }
+
+    @Override
+    public abstract Iteration<Integer> predecessors(int v);
+
+    @Override
+    public Iteration<int[]> edges() {
+        // FIXME
+        return null;
+    }
+
+    @Override
+    protected boolean mine(int v) {
+        // FIXME
+        return contains(v);
+    }
+
+    @Override
+    protected void checkMyVertex(int v) {
+        // FIXME
+    }
+
+    @Override
+    protected int edgeId(int u, int v) {
+        // FIXME
+        return 0;
+    }
+
+    // FIXME ======================================================================
+    private HashMap<Integer, LinkedList<Integer>> _vertices;
+
+   
+    /*
+    private class Vertex {
+        Vertex (int num) {
+            _value = num;
+
+        }
+        private int getValue() {
+            return _value;
+        }
+        private void addEdge(Edge e) {
+            _edges.add(e);
+        }
+        private HashSet<Edge> getEdges() {
+            return _edges;
+        }
+        private int _value;
+
+        private HashSet<Edge> _edges = new HashSet<Edge>(); //maybe not a hashset, maybe something that keeps track of order added
+    }                                                       //ArrayList? maybe?
+
+    private class Edge {
+        Edge (Vertex A, Vertex B) {
+            _ends[0] = A;
+            _ends[1] = B;
+        }
+        private Vertex[] getVertices() {
+            return _ends;
+        }
+        private Vertex[] _ends = new Vertex[2];
+    }
+    */
+
+}

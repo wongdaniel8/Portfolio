@@ -1,0 +1,135 @@
+package db61b;
+import org.junit.Test;
+import java.util.HashSet;
+import java.util.ArrayList;
+import static org.junit.Assert.*;
+
+	/** Tests basic functionalities */
+
+public class BasicTests {
+	/*
+	@Test
+	public void testRow() {
+		String[] vals = {"dog", "cat", "whale", "tiger", "giraffe"};
+		String[] vals2 = {"dog", "cat", "whale", "tiger", "giraffe"};
+		Row r = new Row(vals);
+		assertEquals(r.size(), 5, .01);
+		assertEquals(r.get(3), "tiger");
+		Row j = new Row(vals2);
+		assertEquals(r.equals(j), true);
+	}
+
+	@Test
+	public void testTableBasics() {
+		String[] cols = {"name", "SID", "major"};
+		Table t = new Table(cols);
+		String[] vals = {"Daniel", "24199291", "MCB/CS"};
+		String[] vals2 = {"Herb420", "1234578", "EECS"};
+		String[] vals3 = {"Kai", "0234578", "Music/EthnicStudies"};
+		Row r1 = new Row(vals);
+		Row r2 = new Row(vals2);
+		Row r3 = new Row(vals3);
+		t.add(r1);
+		t.add(r2);
+		t.add(r3);
+		t.print();
+		assertEquals(t.columns(), 3, .01);
+		assertEquals(t.getTitle(2), "major");
+		assertEquals(t.findColumn("SID"), 1, .01);
+		assertEquals(t.size(),3,.01);
+	}
+	
+
+	/* Tests select without any conditional clauses*/
+	/*
+	@Test 
+	public void testSelect() {
+		String[] cols = {"name", "SID", "age", "height", "major"};
+		Table t = new Table(cols);
+		String[] vals = {"Daniel", "24199291", "19", "tall", "MCB/CS"};
+		String[] vals2 = {"Herb420", "1234578", "18", "short", "EECS"};
+		String[] vals3 = {"Kai", "0234578", "20", "short", "Music/EthnicStudies"};
+		Row r1 = new Row(vals);
+		Row r2 = new Row(vals2);
+		Row r3 = new Row(vals3);
+		t.add(r1);
+		t.add(r2);
+		t.add(r3);
+		assertEquals(t.columns(), 5, .01);
+		ArrayList<String> desiredCols = new ArrayList<String>();
+		desiredCols.add("name");
+		desiredCols.add("major");
+		desiredCols.add("age");
+		Table selected = t.select(desiredCols, null);
+		assertEquals(selected.columns(), 3, .01);
+		assertEquals(selected.getTitle(2), "age");
+		selected.print();
+
+		//DO SELECTED COLUMNS HAVE TO BE SPECIFIED BY USER IN ORDER OF THE 
+		//TABLE, LIKE NAME, MAJOR, AGE    VS.    AGE, NAME, MAJOR
+	}
+	*/
+	@Test
+	public void testRowConstructor() {
+		ArrayList<Column> c = new ArrayList<Column>();
+		String[] cols1 = {"name", "SID", "major"};
+		Table t1 = new Table(cols1);
+		String[] vals1 = {"Daniel", "1", "MCB/CS"};
+		String[] vals2 = {"Herb420", "2", "EEEEECS"};
+		String[] vals3 = {"Kai", "3", "Music/EthnicStudies"};
+		Row r1 = new Row(vals1);
+		Row r2 = new Row(vals2);
+		Row r3 = new Row(vals3);
+		t1.add(r1);
+		t1.add(r2);
+		t1.add(r3);
+		assertEquals(t1.size(), 3, .01);
+		t1.print();
+		System.out.println();
+
+		String[] cols2 = {"name", "SID", "food"};
+		Table t2 = new Table(cols2);
+		String[] vals4 = {"Oscar", "4", "chipotle"};
+		String[] vals5 = {"River", "5", "artichoke"};
+		String[] vals6 = {"Anthony", "6", "bannanaBerry"};
+		Row r4 = new Row(vals4);
+		Row r5 = new Row(vals5);
+		Row r6 = new Row(vals6);
+		t2.add(r4);
+		t2.add(r5);
+		t2.add(r6);
+		assertEquals(t2.size(), 3, .01);
+		t2.print();
+
+		System.out.println();
+		Column c1 = new Column("name", t1, t2);
+		System.out.print("c1: ");
+		c1.print();
+		System.out.println("c1 getFrom: "+c1.getFrom(r1, r2, r3));
+		System.out.println();
+		Column c2 = new Column("food", t1, t2);
+		System.out.print("c2: ");
+		c2.print();
+		System.out.println("c2 getFrom: "+c2.getFrom(r4, r5, r6));
+		ArrayList<Column> cols = new ArrayList<Column>() ;
+		cols.add(c1); 
+		cols.add(c2);
+		System.out.println();
+
+		Row newRow = new Row(cols, r1,r5);
+		System.out.println("contents of newRow: ");
+		for (String s : newRow.getData()) {
+			System.out.print(s+ " ");
+		}
+		
+
+
+
+
+	}
+	
+
+	public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(BasicTests.class));
+    }
+}

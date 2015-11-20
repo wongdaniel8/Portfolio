@@ -1,0 +1,19 @@
+
+#Tests multiple commands
+java -ea jump61.Main
+None
+===#1===
+manual blue
+auto red
+manual red
+start
+size 3
+start
+3 3
+2 2
+1 1
+dump
+clear
+dump
+quit
+===#2===

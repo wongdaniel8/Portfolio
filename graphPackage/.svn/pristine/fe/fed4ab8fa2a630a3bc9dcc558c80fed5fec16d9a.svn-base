@@ -1,0 +1,55 @@
+package graph;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.Queue;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+
+
+/** Unit tests for the ShortestPaths class.
+ *  @author Daniel Wong
+ */
+
+public class ShortestPathsTest {
+    @Test
+    public void testSetUp() {
+    	UndirectedGraph g = new UndirectedGraph();
+		g.add(); g.add(); g.add(); g.add();
+		g.add(); g.add(); g.add(); g.add();
+		LabeledGraph<Integer, EdgeLabel> _LG = 
+		new LabeledGraph<Integer, EdgeLabel>(g);
+		for (int i = 1; i < 9; i++) {
+			_LG.add((Integer) i);
+		}
+		_LG.add(1, 3, new EdgeLabel(5)); _LG.add(1, 7, new EdgeLabel(7)); _LG.add(1, 2, new EdgeLabel(2));
+		_LG.add(1, 4, new EdgeLabel(3)); _LG.add(7, 4, new EdgeLabel(3)); _LG.add(7, 8, new EdgeLabel(1));
+		_LG.add(4, 2, new EdgeLabel(5)); _LG.add(4, 8, new EdgeLabel(6)); _LG.add(4, 5, new EdgeLabel(4));
+		_LG.add(2, 3, new EdgeLabel(4)); _LG.add(2, 5, new EdgeLabel(3)); _LG.add(1, 3, new EdgeLabel(5));
+		_LG.add(3, 6, new EdgeLabel(2)); _LG.add(5, 6, new EdgeLabel(1)); _LG.add(5, 8, new EdgeLabel(2));
+		myPath p = new myPath(g, 1);
+		p.setPaths();
+		assertEquals(p.getWeight(0, 7), 7);
+
+    } 
+
+   
+	private class myPath extends SimpleShortestPaths {
+		myPath(Graph G, int source) {
+			super(G, source);
+		}
+
+		@Override
+		protected double getWeight(int u, int v) {
+			return -500;
+		}
+	}
+
+	private class EdgeLabel {
+		EdgeLabel(double lab) {
+			_lab = lab;
+		}
+		private double _lab;
+	}
+
+}

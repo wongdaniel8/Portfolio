@@ -1,0 +1,17 @@
+Description with Reproducabilities: 
+	
+	I seem to pass most of the tests in the autograder about (2/3) but I recieve this odd error when the following is run. I think that whatever is causing this error is also causing many of the other ones to fail, and I can't seem to find it. Any help very much appreciated. Thank you! 
+
+	1) In command interpreter, 	run the following: 
+	load students;
+	load schedule;
+	select SID, CCN from students, schedule;
+	
+	OUTPUT: Error: unrecognizable command
+
+	2) also in command interpreter, in the situation when 2 of the selected columns are the same (SID = SID), these same to fail (or perhaps it's directly related to problem above), but my own tests seem to not fail with these, so I assume the problem is in the command interpreter.
+
+	select Firstname, Lastname, Grade from students, enrolled where CCN = '21001' and SID = SID;
+
+
+

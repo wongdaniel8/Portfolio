@@ -1,0 +1,19 @@
+package db61b;
+import org.junit.Test;
+import static org.junit.Assert.*;
+class TestRow {
+	@Test
+	public void testIt() {
+		String[] vals = {"dog", "cat", "whale", "tiger", "giraffe"};
+		String[] vals2 = {"dog", "cat", "whale", "tiger", "giraffe"};
+		Row r = new Row(vals);
+		assertEquals(r.size(), 5, .01);
+		assertEquals(r.get(3), "whale");
+		Row j = new Row(vals2);
+		assertEquals(r.equals(j), true);
+	}
+
+	public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestRow.class));
+    }
+}

@@ -1,0 +1,220 @@
+// This file contains a SUGGESTION for the structure of your program.  You
+// may change any of it, or add additional files to this directory (package),
+// as long as you conform to the project specification.
+
+// Comments that start with "//" are intended to be removed from your
+// solutions.
+package jump61;
+
+import static jump61.Side.*;
+import static jump61.Square.square;
+
+/** A Jump61 board state that may be modified.
+ *  @author Daniel Wong 
+ */
+class MutableBoard extends Board {
+    private Square[][] _squares; //
+
+    /** An N x N board in initial configuration. */
+    MutableBoard(int N) {
+        // FIXME
+        _squares = new Square[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0 ; j < N; j++) {
+                _squares[i][j] = Square.square(Side.WHITE, 1);
+            }
+        }
+    }
+
+    /** A board whose initial contents are copied from BOARD0, but whose
+     *  undo history is clear. */
+    MutableBoard(Board board0) {
+        // FIXME
+        //MutableBoard answer = new MutableBoard(board0.size());
+        for (int i = 1; i < board0.size() + 1; i++) {
+            for (int j = 1; j < board0.size() + 1; j++) {
+                Square sq = board0.get(i, j);
+                _squares[i - 1][j - 1] = sq; //FIX index? 
+            }
+        }
+    }
+
+    @Override
+    void clear(int N) {
+        // FIXME
+        announce();
+        //
+        _squares = new Square[N][N];
+        //
+    }
+
+    @Override
+    void copy(Board board) {
+        // FIXME
+        for (int i = 1; i < board.size() + 1; i++) {
+            for (int j = 1; j < board.size() + 1; j++) {
+                Square sq = board.get(i, j);
+                _squares[i - 1][j - 1] = sq; //FIX index? 
+            }
+        }
+
+    }
+
+    /** Copy the contents of BOARD into me, without modifying my undo
+     *  history.  Assumes BOARD and I have the same size. */
+    private void internalCopy(MutableBoard board) {
+        // FIXME
+        for (int i = 1; i < board.size() + 1; i++) {
+            for (int j = 1; j < board.size() + 1; j++) {
+                Square sq = board.get(i, j);
+                _squares[i - 1][j - 1] = sq; //FIX index? 
+            }
+        }
+
+    }
+
+    @Override
+    int size() {
+        // REPLACE WITH SOLUTION
+        return _squares.length;
+    }
+
+    @Override
+    Square get(int n) {
+        // REPLACE WITH SOLUTION
+        //return null;
+        //int row = n / size(); //floor divides automatically?
+        //int col = n % size(); 
+        //return get(row(n) - 1, col(n) - 1);
+        return _squares[row(n) - 1][col(n) - 1];
+    }
+
+    @Override
+    int numOfSide(Side side) {
+        // REPLACE WITH SOLUTION
+        int count = 0;
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                System.out.println("REACHEED1");
+                if (_squares[i][j].getSide() == side) {
+                    System.out.println("REACHEED2");
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    @Override
+    int numPieces() {
+        // REPLACE WITH SOLUTION
+        //return 0;
+        int count = 0;
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                Square sq = get(i,j);
+                count += sq.getSpots();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    void addSpot(Side player, int r, int c) {
+        // FIXME
+        announce();
+        //
+        /*
+        Side faction = _squares[r - 1][c - 1].getSide();
+        if (!player.toString().equals(faction.toString())) {
+            System.out.println("error square is occupied by the other faction");
+            return;
+        }
+        */
+        int spotsAlreadyThere = get(r,c).getSpots();
+        if (spotsAlreadyThere == neigbors(r, c)) {
+            Square replacement = Sqaure.square(player,
+                spotsAlreadyThere + 1 - neighbors(r, c));
+            _squares[r - 1][c - 1] = replacement;
+            for 
+        }
+        Square newSquare = Square.square(player, spotsAlreadyThere + 1);
+        _squares[r - 1][c - 1] = newSquare;
+        //
+    }
+
+    @Override
+    void addSpot(Side player, int n) {
+        // FIXME
+        announce();
+        //
+        int r = row(n);
+        int c = col(n);
+        Side faction = _squares[r - 1][c - 1].getSide();
+        if (player != faction) {
+            System.out.println("error square is occupied by the other faction");
+            return;
+        }
+        int spotsAlreadyThere = get(n).getSpots();
+        Square newSquare = Square.square(player, spotsAlreadyThere + 1);
+        _squares[r - 1][c - 1] = newSquare;
+        //
+    }
+
+    @Override
+    void set(int r, int c, int num, Side player) {
+        internalSet(sqNum(r, c), square(player, num));
+    }
+
+    @Override
+    void set(int n, int num, Side player) {
+        internalSet(n, square(player, num));
+        announce();
+    }
+
+    @Override
+    void undo() {
+        // FIXME
+    }
+
+    /** Record the beginning of a move in the undo history. */
+    private void markUndo() {
+        // FIXME
+    }
+
+    /** Set the contents of the square with index IND to SQ. Update counts
+     *  of numbers of squares of each color.  */
+    private void internalSet(int ind, Square sq) {
+        // FIXME
+        //COUNT NOT UPDATED, HOW DO I DO THAT
+        int row = row(ind);
+        int col = col(ind);
+        _squares[row - 1][col - 1] = sq;
+    }
+
+    /** Notify all Observers of a change. */
+    private void announce() {
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MutableBoard)) {
+            return obj.equals(this);
+        } else {
+            // REPLACE WITH SOLUTION
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        // REPLACE WITH SOLUTION.  RETURN A NUMBER THAT IS THE SAME FOR BOARDS
+        // WITH IDENTICAL CONTENTS (IT NEED NOT BE DIFFERENT IF THE BOARDS
+        // DIFFER.)  THE CURRENT STATEMENT WORKS, BUT IS NOT PARTICULARLY
+        // EFFICIENT.
+        return 0;
+    }
+
+}

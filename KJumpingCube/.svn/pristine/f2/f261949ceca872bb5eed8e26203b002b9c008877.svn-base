@@ -1,0 +1,183 @@
+// This file contains a SUGGESTION for the structure of your program.  You
+// may change any of it, or add additional files to this directory (package),
+// as long as you conform to the project specification.
+
+// Comments that start with "//" are intended to be removed from your
+// solutions.
+package jump61;
+
+import static jump61.Side.*;
+import static jump61.Square.square;
+
+/** A Jump61 board state that may be modified.
+ *  @author Daniel Wong 
+ */
+class MutableBoard extends Board {
+    private Square[][] _squares; //
+    private int _length;
+
+    /** An N x N board in initial configuration. */
+    MutableBoard(int N) {
+        // FIXME
+        _squares = new Square[N][N];
+    }
+
+    /** A board whose initial contents are copied from BOARD0, but whose
+     *  undo history is clear. */
+    MutableBoard(Board board0) {
+        // FIXME
+        //MutableBoard answer = new MutableBoard(board0.size());
+        for (int i = 0; i < board0.size(); i++) {
+            for (int j = 0; j < board0.size(); j++) {
+                Square sq = board0.get(i,j);
+                _squares[i][j] = sq;
+            }
+        }
+    }
+
+    @Override
+    void clear(int N) {
+        // FIXME
+        announce();
+    }
+
+    @Override
+    void copy(Board board) {
+        // FIXME
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                Square sq = board.get(i,j);
+                _squares[i][j] = sq;
+            }
+        }
+
+    }
+
+    /** Copy the contents of BOARD into me, without modifying my undo
+     *  history.  Assumes BOARD and I have the same size. */
+    private void internalCopy(MutableBoard board) {
+        // FIXME
+    }
+
+    @Override
+    int size() {
+        // REPLACE WITH SOLUTION
+        //return 0;
+        return _squares.length;
+    }
+
+    @Override
+    Square get(int n) {
+        // REPLACE WITH SOLUTION
+        //return null;
+        int row = n / size(); //floor divides automatically?
+        int col = n % size(); 
+        return get(row, col);
+    }
+
+    @Override
+    int numOfSide(Side side) {
+        // REPLACE WITH SOLUTION
+        //return 0;
+        int count = 0;
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                Square sq = get(i,j);
+                if (sq.getSide() == side) { //== ok? or .equals method? 
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    @Override
+    int numPieces() {
+        // REPLACE WITH SOLUTION
+        //return 0;
+        int count = 0;
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                Square sq = get(i,j);
+                count += sq.getSpots();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    void addSpot(Side player, int r, int c) {
+        // FIXME
+        announce();
+
+        /*
+        int spotsAlreadyThere = get(r,c).getSpots();
+        Square newSquare = new Square(player, spotsAlreadyThere + 1);
+        _board[r][c] = newSquare;
+        */
+    }
+
+    @Override
+    void addSpot(Side player, int n) {
+        // FIXME
+        announce();
+        /*
+        int spotsAlreadyThere = get(n).getSpots();
+        Square newSquare = new Square(player, spotsAlreadyThere + 1);
+        _board[r][c] = newSquare;
+        */
+    }
+
+    @Override
+    void set(int r, int c, int num, Side player) {
+        internalSet(sqNum(r, c), square(player, num));
+    }
+
+    @Override
+    void set(int n, int num, Side player) {
+        internalSet(n, square(player, num));
+        announce();
+    }
+
+    @Override
+    void undo() {
+        // FIXME
+    }
+
+    /** Record the beginning of a move in the undo history. */
+    private void markUndo() {
+        // FIXME
+    }
+
+    /** Set the contents of the square with index IND to SQ. Update counts
+     *  of numbers of squares of each color.  */
+    private void internalSet(int ind, Square sq) {
+        // FIXME
+    }
+
+    /** Notify all Observers of a change. */
+    private void announce() {
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MutableBoard)) {
+            return obj.equals(this);
+        } else {
+            // REPLACE WITH SOLUTION
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        // REPLACE WITH SOLUTION.  RETURN A NUMBER THAT IS THE SAME FOR BOARDS
+        // WITH IDENTICAL CONTENTS (IT NEED NOT BE DIFFERENT IF THE BOARDS
+        // DIFFER.)  THE CURRENT STATEMENT WORKS, BUT IS NOT PARTICULARLY
+        // EFFICIENT.
+        return 0;
+    }
+
+}

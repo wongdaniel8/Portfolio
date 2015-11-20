@@ -1,0 +1,41 @@
+# This makefile is defined to give you the following targets:
+#
+#    default: Same as check
+#    make-check: Run integration tests on make application.
+#    make-trip: Run integration tests on trip application.
+#    check: Same as make-check + make-trip 
+#    clean: Remove extraneous files.
+#
+# You can use this file without understanding most of it, of course, but
+# I strongly recommend that you try to figure it out, and where you cannot,
+# that you ask questions.  The Lab Reader contains documentation.
+
+SHELL = /bin/bash
+
+TESTER := CLASSPATH=$(shell pwd)/..:$(CLASSPATH) python3 tester.py
+
+TESTER_FLAGS =
+
+.PHONY: default check clean make-check trip-check
+
+# First, and therefore default, target.
+default:
+	$(MAKE) -C .. 
+	$(MAKE) check
+
+check: make-check trip-check
+
+make-check:
+	@echo "Testing application make..."
+	@cd make; $(TESTER) $(TESTER_FLAGS) *.in
+
+trip-check:
+	@echo "Testing application trip..."
+	@cd trip; $(TESTER) $(TESTER_FLAGS) *.in
+
+# 'make clean' will clean up stuff you can reconstruct.
+clean:
+	cd trip; $(RM) -r *~ __pycache__ 
+	cd make; $(RM) -r *~ __pycache__ 
+
+

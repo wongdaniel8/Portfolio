@@ -1,0 +1,268 @@
+package graph;
+
+/* See restrictions in Graph.java. */
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.HashSet;
+
+/** The shortest paths through an edge-weighted labeled graph of type GRAPHTYPE.
+ *  By overrriding methods getWeight, setWeight, getPredecessor, and
+ *  setPredecessor, the client can determine how to get parameters of the
+ *  search and to return results.  By overriding estimatedDistance, clients
+ *  can search for paths to specific destinations using A* search.
+ *  @author Daniel Wong
+ */
+public abstract class ShortestPaths {
+
+    /** The shortest paths in G from SOURCE. */
+    public ShortestPaths(Graph G, int source) {
+        this(G, source, 0);
+    }
+
+    /** A shortest path in G from SOURCE to DEST. */
+    public ShortestPaths(Graph G, int source, int dest) {
+        _G = G;
+        _source = source;
+        _dest = dest;
+        _marked = new ArrayList<Integer>();
+        _fringe = new ArrayDeque<Integer>();
+        _map = new HashMap<Integer, Integer>();
+    }
+
+    /** Initialize the shortest paths.  Must be called before using
+     *  getWeight, getPredecessor, and pathTo. */
+    public void setPaths() {
+        //doesnt work with undirected graphs...
+        _fringe.add(_source); _seen.add(_source);
+        while (!_fringe.isEmpty()) {           
+            int i = _fringe.removeFirst();
+            //System.out.println("VERTEX VISITED: "+i + " ");
+            if (!_marked.contains(i)) {
+                _marked.add(i);
+                visit(i);
+                int minPredecessor = findSmallestPredecessor(i);
+                _map.put(i, minPredecessor);
+                double label = calculateSmallestLabel(i, 0);
+                if (minPredecessor != 0) {
+                    setWeight(i, getWeight(minPredecessor)
+                        + getWeight(minPredecessor, i));
+                }
+                for (Integer suc : _G.successors(i)) {
+                    //System.out.println("suc: "+suc);
+                   // System.out.println("WeightIToSuc: "+getWeight(suc, i));
+                    //System.out.println("Weightsuc: "+getWeight(suc));
+                    //System.out.println("WeightI: "+getWeight(i));
+                    _seen.add(suc);
+                    if (!_marked.contains(suc)) {
+                        setPredecessor(suc, findSmallestPredecessor(suc));
+                        setWeight(suc, getWeight(i, suc) + getWeight(i));
+                    } else if ((getWeight(i, suc) + getWeight(i))
+                        < getWeight(suc)) {
+                        setPredecessor(suc, i);
+                        setWeight(suc, getWeight(i, suc) + getWeight(i));
+                    }
+                }
+                if (_G.outDegree(i) == 0) {
+                    _fringe.remove(i);
+                }
+                if (i == _dest) {
+                    break;
+                }
+                for (Integer k : _G.successors(i)) {
+                    _priorityMap.put(k, i);
+                }
+                for (Integer k : specialSuccessors(i)) {
+                    if (!_marked.contains(k)) {
+                        _fringe.add(k);
+                    }
+                }
+            }
+        }
+        for (Integer x : _G.vertices()) {
+            if (!_seen.contains(x)) {
+                setWeight(x, Double.POSITIVE_INFINITY);
+            }
+        }
+
+        /*
+        System.out.println("seen: ");
+        for (Integer j : _seen) {
+            System.out.println(j+", ");
+        }
+        System.out.println("vertex weights:");
+        for (Integer i : _G.vertices()) {
+            System.out.println("i: "+i+" weight: "+
+            getWeight(i)+" estimated d: "+estimatedDistance(i));
+        }
+        System.out.println("predecessor listing: ");
+        for (int i : _G.vertices()) {
+            System.out.println("i" + i + ", pred: "+getPredecessor(i));
+        }
+        */
+    }
+
+    /** My way of keeping track of order of
+     * vertices visited to test A* functionality. Adds VERTEX. */
+    private void visit(int vertex) {
+        _visited.add(vertex);
+    }
+
+    /** Returns successors of VERTEX according to priority,
+     * with the first item (A) returned
+     * having the minimum of estimatedDistance(eachSuccessor of VERTEX)
+    * + edgeWeight of VERTEX to/from A. */
+    private Iteration<Integer> specialSuccessors(int vertex) {
+        ArrayList<Integer> prioritized = new ArrayList<Integer>();
+        HashMap<Double, Integer> valToVertex = new HashMap<Double, Integer>();
+        HashMap<Integer, Double> vertexToVal = new HashMap<Integer, Double>();
+        PriorityQueue<Double> vals = new PriorityQueue<Double>();
+        for (Integer j : _G.successors(vertex)) {
+            double val = estimatedDistance(j) + getWeight(vertex, j);
+            valToVertex.put(val, j);
+            vertexToVal.put(j, val);
+        }
+        for (Double val : valToVertex.keySet()) {
+            vals.add(val);
+        }
+        while (!vals.isEmpty()) {
+            prioritized.add(valToVertex.get((double) vals.remove()));
+        }
+        Iteration<Integer> returnVal =
+        Iteration.iteration(prioritized.iterator());
+        return returnVal;
+    }
+
+    /** Returns the smallest label, represented as COUNT, of VERTEX following
+     * the shortes path towards the source vertex.
+     * Recursively computes count. */
+    private double calculateSmallestLabel(int vertex, double count) {
+        if (vertex == _source || _G.outDegree(vertex) == 0) {
+            return count;
+        } else {
+            return calculateSmallestLabel(_map.get(vertex),
+                _map.get(vertex) + count);
+        }
+    }
+    /** Returns the predecessor that will
+     * lead VERTEX to the source in the shortest path.
+     * If no predecessor present, returns 0. */
+    private int findSmallestPredecessor(int vertex) {
+        if (_G.inDegree(vertex) == 0 || vertex == _source) {
+            return 0;
+        }
+        HashMap<Integer, Double> miniMap = new HashMap<Integer, Double>();
+        for (int predecessor : _G.predecessors(vertex)) {
+            double value = getWeight(predecessor, vertex)
+                + getWeight(predecessor);
+            if (_marked.contains(predecessor)) {
+                miniMap.put(predecessor, value);
+            }
+        }
+        double min = Double.POSITIVE_INFINITY;// Integer.MAX_VALUE;
+        int returnVal = -1;
+        for (Integer k : miniMap.keySet()) {
+            if (miniMap.get(k) < min) {
+                min = miniMap.get(k);
+                returnVal = k;
+            }
+        }
+        return returnVal;
+    }
+
+    /** Initializes my predecessor mapping. Assumes weights of vertices
+     * have already been set. */
+    private void initializePredecessorMap() {
+        for (Integer vert : _G.vertices()) {
+            if (vert != _source) {
+                setPredecessor(vert, _map.get(vert));
+            }
+        }
+        ArrayList<Integer> path = (ArrayList<Integer>) pathTo(_dest);
+        for (int i = path.size() - 1; i > 0; i--) {
+            setPredecessor(path.get(i), path.get(i - 1));
+        }
+    }
+
+    /** Returns the starting vertex. */
+    public int getSource() {
+        return _source;
+    }
+
+    /** Returns the target vertex, or 0 if there is none. */
+    public int getDest() {
+        return _dest;
+    }
+
+    /** Returns the current weight of vertex V in the graph.  If V is
+     *  not in the graph, returns positive infinity. */
+    public abstract double getWeight(int v);
+
+    /** Set getWeight(V) to W. Assumes V is in the graph. */
+    protected abstract void setWeight(int v, double w);
+
+    /** Returns the current predecessor vertex of vertex V in the graph, or 0 if
+     *  V is not in the graph or has no predecessor. */
+    public abstract int getPredecessor(int v);
+
+    /** Set getPredecessor(V) to U. */
+    protected abstract void setPredecessor(int v, int u);
+
+    /** Returns an estimated heuristic weight of the shortest path from vertex
+     *  V to the destination vertex (if any).  This is assumed to be less
+     *  than the actual weight, and is 0 by default. */
+    protected double estimatedDistance(int v) {
+        return 0.0;
+    }
+
+    /** Returns the current weight of edge (U, V) in the graph.  If (U, V) is
+     *  not in the graph, returns positive infinity. */
+    protected abstract double getWeight(int u, int v);
+
+    /** Returns a list of vertices starting at _source and ending
+     *  at V that represents a shortest path to V.  Invalid if there is a
+     *  destination vertex other than V. */
+    public List<Integer> pathTo(int v) {
+        ArrayList<Integer> returnVal = new ArrayList<Integer>();
+        returnVal.add(v);
+        int vertexToConsider = _map.get(v);
+        while (vertexToConsider != _source) {
+            returnVal.add(0, vertexToConsider);
+            vertexToConsider = _map.get(vertexToConsider);
+        }
+        returnVal.add(0, _source);
+        return returnVal;
+    }
+
+    /** Returns a list of vertices starting at the source and ending at the
+     *  destination vertex. Invalid if the destination is not specified. */
+    public List<Integer> pathTo() {
+        return pathTo(getDest());
+    }
+
+    /** The graph being searched. */
+    protected final Graph _G;
+    /** The starting vertex. */
+    private final int _source;
+    /** The target vertex. */
+    private final int _dest;
+    /** ArrayList to keep track of marked vertices. */
+    private ArrayList<Integer> _marked;
+    /** the fringe of vertices that need to be processed. */
+    private ArrayDeque<Integer> _fringe;
+    /** Maps a vertex (key) to another vertex/successor (value) along the
+     * shortest path to the source. If a vertex is not part of a
+     * a shortest path route, then it does not have a corresponding key in the
+     * map. */
+    private HashMap<Integer, Integer> _map;
+    /** Maps a vertex to its predecessor being considered in setPaths. */
+    private HashMap<Integer, Integer> _priorityMap
+        = new HashMap<Integer, Integer>();
+    /** Denotes visited vertices. */
+    private ArrayList<Integer> _visited = new ArrayList<Integer>();
+    /** To keep track of verices seen. */
+    private HashSet<Integer> _seen = new HashSet<Integer>();
+}

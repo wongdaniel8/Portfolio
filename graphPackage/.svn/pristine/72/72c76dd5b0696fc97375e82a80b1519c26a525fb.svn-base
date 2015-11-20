@@ -1,0 +1,184 @@
+package graph;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+
+/** Unit tests for the ShortestPaths class.
+ *  @author Daniel Wong
+ */
+public class PathsTesting {
+
+    @Test
+    public void testSetUpFromTextBook() {
+        UndirectedGraph g = new UndirectedGraph();
+        LabeledGraph<Integer, Double> myLG =
+            new LabeledGraph<Integer, Double>(g);
+        myLG.add(0); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(1, 3, new Double(5)); myLG.add(1, 7, new Double(7));
+        myLG.add(1, 2, new Double(2));
+        myLG.add(1, 4, new Double(3)); myLG.add(7, 4, new Double(3));
+        myLG.add(7, 8, new Double(1));
+        myLG.add(4, 2, new Double(5)); myLG.add(4, 8, new Double(6));
+        myLG.add(4, 5, new Double(4));
+        myLG.add(2, 3, new Double(4)); myLG.add(2, 5, new Double(3));
+        myLG.add(1, 3, new Double(5));
+        myLG.add(3, 6, new Double(2)); myLG.add(5, 6, new Double(1));
+        myLG.add(5, 8, new Double(2));
+        CustomPath p = new CustomPath(myLG, 1, 6);
+        p.setPaths();
+        assertEquals(p.getWeight(1, 7), 7, .01);
+        assertEquals(p.getWeight(1), 0, .01);
+        ArrayList<Integer> pathToSix = (ArrayList<Integer>) p.pathTo(6);
+        System.out.println("path to six: ");
+        for (Integer i : pathToSix) {
+            System.out.print(i + ", ");
+        }
+        System.out.println();
+    }
+
+    @Test
+    public void testAStarModifiedProjSlides() {
+        DirectedGraph g = new DirectedGraph();
+        LabeledGraph<Integer, Double> myLG
+            = new LabeledGraph<Integer, Double>(g);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(5, 7, new Double(1.1));
+        myLG.add(Integer.MAX_VALUE); myLG.add(6, 8, new Double(10000));
+        myLG.remove(1);
+        myLG.add(4, 5, new Double(11.2)); myLG.add(4, 2, new Double(12.2));
+        myLG.add(5, 6, new Double(30)); myLG.add(5, 3, new Double(9.1));
+        myLG.add(4, 3, new Double(102.0)); myLG.add(2, 3, new Double(6.5));
+        CustomPath p = new CustomPath(myLG, 4, 3);
+        p.setPaths();
+        ArrayList<Integer> pathToThree = (ArrayList<Integer>) p.pathTo(3);
+        assertEquals(pathToThree.size(), 3, .01);
+        System.out.println("path to three: ");
+        for (Integer i : pathToThree) {
+            System.out.print(i + ", ");
+        }
+        System.out.println();
+        assertEquals(pathToThree.get(0), 4, .01);
+        assertEquals(pathToThree.get(1), 2, .01);
+        assertEquals(pathToThree.get(2), 3, .01);
+        assertEquals(p.getWeight(3), 18.7, .01);
+        assertEquals(p.getWeight(2), 12.2, .01);
+        assertEquals(p.getWeight(4), 0, .01);
+        assertEquals(p.getWeight(5), 11.2, .01);
+        assertEquals(p.getWeight(6), 41.2, .01);
+        assertEquals(p.getWeight(8), Double.POSITIVE_INFINITY, .01);
+        assertEquals(p.getPredecessor(6), 5, .01);
+        assertEquals(p.getPredecessor(4), 0, .01);
+        assertEquals(p.getPredecessor(5), 4, .01);
+        assertEquals(p.getPredecessor(2), 4, .01);
+        assertEquals(p.getPredecessor(3), 2, .01);
+        assertEquals(p.getPredecessor(8), 0, .01);
+    }
+
+    @Test
+    public void testMySetUp() {
+        UndirectedGraph g = new UndirectedGraph();
+        LabeledGraph<Integer, Double> myLG =
+            new LabeledGraph<Integer, Double>(g);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+
+        myLG.add(1, 2, new Double(1)); myLG.add(1, 4, new Double(10));
+        myLG.add(2, 5, new Double(2)); myLG.add(2, 3, new Double(5));
+        myLG.add(1, 3, new Double(3)); myLG.add(3, 5, new Double(2));
+        myLG.add(5, 6, new Double(3));
+        CustomPath p = new CustomPath(myLG, 1, 6);
+        p.setPaths();
+        ArrayList<Integer> pathToSix = (ArrayList<Integer>) p.pathTo(6);
+        assertEquals(pathToSix.size(), 4, .01);
+        System.out.println("path to six: ");
+        for (Integer i : pathToSix) {
+            System.out.print(i + ", ");
+        }
+        assertEquals(p.getWeight(6), 6, .01);
+        assertEquals(p.getWeight(5), 3, .01);
+        assertEquals(p.getWeight(3), 3, .01);
+        assertEquals(p.getWeight(2), 1, .01);
+        assertEquals(p.getWeight(1), 0, .01);
+        assertEquals(p.getWeight(4), 10, .01);
+        assertEquals(p.getPredecessor(6), 5, .01);
+        assertEquals(p.getPredecessor(5), 2, .01);
+        assertEquals(p.getPredecessor(3), 1, .01);
+        assertEquals(p.getPredecessor(2), 1, .01);
+        assertEquals(p.getPredecessor(4), 1, .01);
+    }
+
+    @Test
+    public void basicUndirected() {
+        UndirectedGraph g = new UndirectedGraph();
+        LabeledGraph<Integer, Double> myLG
+            = new LabeledGraph<Integer, Double>(g);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(Integer.MAX_VALUE); myLG.add(Integer.MAX_VALUE);
+        myLG.add(2, 1, new Double(100)); myLG.add(1, 3, new Double(1));
+        myLG.add(2, 4, new Double(3)); myLG.add(3, 4, new Double(2));
+        assertEquals(myLG.getLabel(1, 2), (Double) 100.0);
+        CustomPath p = new CustomPath(myLG, 1, 4);
+        p.setPaths();
+        ArrayList<Integer> pathToFour = (ArrayList<Integer>) p.pathTo(4);
+        assertEquals(pathToFour.size(), 3, .01);
+        assertEquals(p.getPredecessor(4), 3, .01);
+        System.out.println("path to four: ");
+        for (Integer i : pathToFour) {
+            System.out.print(i + ", ");
+        }
+        System.out.println();
+    }
+
+    private class CustomPath extends SimpleShortestPaths {
+        CustomPath(LabeledGraph<Integer, Double> G,
+            int source, int destination) {
+            super(G, source, destination);
+            myLG = G;
+        }
+
+        @Override
+        protected double getWeight(int u, int v) {
+            return myLG.getLabel(u, v);
+
+        }
+
+        @Override
+        protected double estimatedDistance(int v) {
+            if (v == 3) {
+                return 0;
+            }
+            if (v == 1) {
+                return 1;
+            }
+            if (v == 2) {
+                return 4;
+            }
+            if (v == 4) {
+                return 102;
+            }
+            if (v == 5) {
+                return 5.1;
+            }
+            if (v == 6) {
+                return 40;
+            }
+            if (v == 7) {
+                return 300000;
+            }
+            return 0;
+        }
+
+        private int collectWeights() {
+            return 0;
+        }
+        private LabeledGraph<Integer, Double> myLG;
+    }
+
+}

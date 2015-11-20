@@ -1,0 +1,57 @@
+package graph;
+import java.util.HashMap;
+
+/* See restrictions in Graph.java. */
+
+/** A partial implementation of ShortestPaths that contains the weights of
+ *  the vertices and the predecessor edges.   The client needs to
+ *  supply only the two-argument getWeight method.
+ *  @author Daniel Wong
+ */
+public abstract class SimpleShortestPaths extends ShortestPaths {
+
+    /** The shortest paths in G from SOURCE. */
+    public SimpleShortestPaths(Graph G, int source) {
+        this(G, source, 0);
+    }
+
+    /** A shortest path in G from SOURCE to DEST. */
+    public SimpleShortestPaths(Graph G, int source, int dest) {
+        super(G, source, dest);
+    }
+
+    @Override
+    public double getWeight(int v) {
+        if (!_G.contains(v)) {
+            return Integer.MAX_VALUE;
+        }
+        return _weights[v - 1];
+    }
+
+    @Override
+    protected void setWeight(int v, double w) {
+        _weights[v - 1] = w;
+    }
+
+    @Override
+    public int getPredecessor(int v) {
+        return _predMap[v - 1];
+    }
+
+    @Override
+    protected void setPredecessor(int v, int u) {
+        if (v == 0) {
+            return;
+        }
+        _predMap[v - 1] = u;
+    }
+
+    /** Maps a vertex to its predecessor along the shortest path to the source.
+     * Vertex 1 corresponds to index 1,
+     * vertex 2 corresponds to index 2, and so forth.
+     * If vertex not present in _G, then it is mapped to 0.
+     * The source is mapped to 0.  */
+    private int[] _predMap = new int[_G.vertexSize() + 1];
+    /** Represents weights of vertices. */
+    private double[] _weights = new double[_G.vertexSize() + 1];
+}
