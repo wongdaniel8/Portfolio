@@ -1,0 +1,7 @@
+.text
+
+.symbol
+0	(null)
+
+.relocation
+0	(null)

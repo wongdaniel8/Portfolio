@@ -1,0 +1,9 @@
+.text
+1109ffff
+1509fffe
+
+.symbol
+0	label1
+0	label2
+
+.relocation
