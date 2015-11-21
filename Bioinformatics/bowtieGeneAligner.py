@@ -1,6 +1,6 @@
 """
     Author: Daniel Wong, email: wongdaniel8@berkeley.edu
-    Bowtie genomic aligner. 
+    Bowtie Genomic Aligner. 
 """
 
 import sys # DO NOT EDIT THIs
