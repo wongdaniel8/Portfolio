@@ -1,16 +1,13 @@
 """
     Author: Daniel Wong, email: wongdaniel8@berkeley.edu
-    Bowtie programming assignment
-    Implement each of the functions below using the algorithms covered in class.
-    You can construct additional functions and data structures but you should not
-    change the functions' APIs.
+    Bowtie genomic aligner. 
 """
 
 import sys # DO NOT EDIT THIs
 
 def get_suffix_array(s):
     """
-    Naive implementation of suffix array generation
+    Implementation of suffix array generation
     """
     SA = [] 
     suffixDictionary = {} #map suffix to its index
@@ -28,7 +25,6 @@ def getM(F):
     Returns the helper data structure M (using the notation from class)
     """
     #1-indexed
-
     M = {} #maps character in alphabet to first occurrence in F
     for i in range(0, len(F)): 
         if F[i] not in M:
@@ -73,23 +69,6 @@ def bwt(s, SA):
         else:
             transform += s[SA[i] - 1]
     return transform
-
-
-    # rotations = []
-    # for x in range(0, len(s)):
-    #     string = ""
-    #     string += s[len(s) - 1]
-    #     for i in range(0, len(s) - 1):
-    #         string += s[i]
-    #     rotations.append(string)
-    #     s = string
-    # rotations = sorted(rotations)
-    # transform = []
-    # for rot in rotations:
-    #     transform.append(rot[len(s) - 1])
-    # return transform
-
-
 
 def getF(L):
     """
@@ -177,59 +156,38 @@ def bowtie(SA, L, F, M, occ, p, q, k):
         
 
     while backtracks < k: 
-        # print("starting p is ", p)
         match = exact_match(p, SA, L, F, M, occ)
-        # print("match", match)
         if isinstance(match, bool) == False: 
             return match
         else:
-
             if openPositions.count(False) == len(q):
                 return False 
-            
             openPos = -1
             bestScore = 10000000000000000
             for d in range(len(q) - 1, -1, -1):
                 if openPositions[d] == True and q[d] <= bestScore:
                     openPos = d
                     bestScore = q[d]
-            # print("open pos", openPos)
             c = pList[openPos]
             substitution = None #the character to substitute in for c
             if c == 'A': substitution = 'T'
             if c == 'T': substitution = 'A'
             if c == 'C': substitution = 'G'
             if c == 'G': substitution = 'C'
-
-            # print("substitution", substitution)
-            # print ("last substituted", lastSubstituted)
-
             pList[openPos] = substitution
             openPositions[openPos] = False
             if openPos > lastSubstituted:
                 for s in range (0, openPos):
                     pList[s] = copyOfP[s]
                     openPositions[s] = True
-                
             lastSubstituted = openPos
             p = ''.join(pList)
-
-            # if len(usedPositions) == 0 or openPos < max(usedPositions): #enforcing case in which subst occurs to right of a previously substituted position
-            #     usedPositions.append(openPos)
-            #     pList[openPos] = substitution 
-            #     openPositions[openPos] = False
-            #     for s in range(openPos + 1, len(p)): #revert p back to original from index d + 1 onwards
-            #         pList[s] = copyOfP[s]
-            #     p = ''.join(pList)
-
             backtracks += 1
-
     return False 
 
-
-def myLocate(p, SA, L, F, M, occ): #CODE BROKEN DO NOT USE
+def myLocate(p, SA, L, F, M, occ): 
     """
-    function identical to exact_match but used to return index of suffix of mismatch 
+    Returns index of suffix of mismatch 
     if mismatch, returns the tuple (-1, index of suffix of mismatch, character that was a mismatch)
     
     """ 
@@ -257,7 +215,7 @@ def myLocate(p, SA, L, F, M, occ): #CODE BROKEN DO NOT USE
      
 
 
-# #DAN'S TESTING CODE DOWN HERE============
+# TESTING CODE DOWN HERE============
 # #========================================
 # print("Dan's testing code: =============================")
 # print get_suffix_array("abcde$")
