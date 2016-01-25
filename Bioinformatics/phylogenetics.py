@@ -6,9 +6,7 @@
 
 def UPGMA(d, mutableD):
 	"""
-    Recursive constructor that takes an ultramteric dissimilary mapping d. 
-    Caller should also pass in a copy of d for manipulation.
-    
+    Recursive constructor that takes an ultramteric dissimilary mapping d (as dictionary). 
     """
 	if len(mutableD.keys()) == 1: return 
 	deltaC = {}
@@ -74,45 +72,3 @@ def neighborJoin2(d):
 	del dCopy[minTuple[1]]
 	print(dCopy)
 	return neighborJoin2(dCopy)
-
-#Testing Code Below
-#====================================
-# d = {}
-# d["d"] = {"b": 32, "r": 48, "w":51}
-# d["b"] = {"d": 32, "r": 26, "w":34}
-# d["r"] = {"d": 48, "b":26, "w":42}
-# d["w"] = {"d": 51, "b":34, "r": 42}
-
-d = {}
-d["d"] = {"b": 32, "r": 48, "w":51, "s": 50, "l": 48, "c":98, "m": 148}
-d["b"] = {"d": 32, "r": 26, "w":34, "s": 29 , "l":33 , "c":84 , "m":136}
-d["r"] = {"d": 48, "b":26, "w":42, "s": 44 , "l": 44 , "c": 92 , "m":152}
-d["w"] = {"d": 51, "b":34, "r": 42, "s": 44 , "l": 38 , "c":86 , "m":142}
-d["s"] = {"d" :50 , "b": 29 , "r": 44 , "w": 44, "l": 24, "c":89 , "m":142}
-d["l"] = {"d" :48 , "b": 33 , "r": 44 , "w": 38 , "s": 24 , "c":90 , "m": 142}
-d["c"] = {"d" : 98, "b": 84 , "r":92 , "w":86 , "s":89 , "l": 90, "m": 148}
-d["m"] = {"d" :148 , "b": 136 , "r": 152 , "w":142 , "s":142 , "l":142 , "c":148}
-# print(neighborJoin2(d))
-
-print("============================")
-# b = {}
-# b["a"] = {"b":5, "c": 7,"d":13}
-# b["b"] = {"a": 5 ,"c": 4,"d": 10}
-# b["c"] = {"a":7 , "b": 4, "d":8}
-# b["d"] = {"a": 13,  "b": 10 , "c":8}
-# print(neighborJoin2(b))
-
-print("============================")
-copyD = d.copy()
-print(UPGMA(d, copyD))
-
-print("============================")
-b = {}
-b["a"] = {"b":2, "c": 4,"d":6}
-b["b"] = {"a": 2 ,"c": 4,"d": 6}
-b["c"] = {"a":4, "b": 4, "d":6}
-b["d"] = {"a": 6,  "b": 6 , "c":6}
-bCopy = b.copy()
-print(UPGMA(b, bCopy))
-
-
