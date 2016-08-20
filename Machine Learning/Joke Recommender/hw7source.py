@@ -53,8 +53,6 @@ meanRatings = np.zeros(len(R[0]))
 for i in range(0, len(meanRatings)):
     meanRatings[i] = sumRatings[i] / float(countsForColumn[i])
 
-# print(validation)
-
 #////////////////////////////////////////////////////////////////////////////
 
 def basicAveragePredictions():
@@ -174,13 +172,6 @@ def kMeansPredict(k, dtype):
 
 def kMeansVisualize(k, dtype):
     clusters, personToCluster = kMeans(k, dtype)
-    # clusters = pickle.load(open( "1numberClustersk20.p", "rb"))
-    
-    # filetype = "1numberClustersk"
-    # filetype += str(k) + ".p"
-    # print(filetype)
-    # pickle.dump(clusters, open(filetype, "wb"))
-
     for cluster in clusters.keys():
         cluster = np.asarray(cluster)
         cluster = np.reshape(cluster, (28,28))
@@ -206,26 +197,6 @@ def kNearestNeighborsPredict(k):
             smallest.append(heappop(personToHeap[i]))
         knearest[i] = smallest
 
-
-    # personToHeap = {}
-
-    # for i in range(0, len(R)):
-    #     heap = []
-    #     personToHeap[i] = heap
-
-    # for i in range(0, len(R)):
-    #     vector = R[i]
-    #     for j in range(0, len(R)):
-    #         if j != i:
-    #             personToHeap[i].append((np.linalg.norm(vector - R[j]), j))
-    # knearest = {}
-    # for i in range(0, len(R)):
-    #     smallest = nsmallest(k, personToHeap[i], key=lambda e:e[0])
-    #     knearest[i] = smallest
-
-
-
-
     predictions = []
     for i in range(0, len(validation)):
         neighbors = knearest[validation[i][0]]
@@ -245,21 +216,12 @@ def kNearestNeighborsPredict(k):
             errors += 1
     print("error rate: ", errors / float(len(predictions)))
 
-            
-
-
-
-
-
-
 #////////////////////////////////////////////////////////////////////////////
 
 def SVD(d, testType):
     print("blah")
-    # R = np.random.normal(0, .01, (10, 10))
     U, s, V = np.linalg.svd(R, full_matrices=False)
     print(U.shape, s.shape, V.shape, "SHAPES")
-
     newU = []
     newV = []
     for i in range(0, len(U)):
@@ -271,7 +233,6 @@ def SVD(d, testType):
     error = meanSquaredError(newU, newV, testType)
     return error #actually predictions right now
 
-
 def meanSquaredError(u, v, testType):
     if testType == "validation":
         data = validation
@@ -282,9 +243,7 @@ def meanSquaredError(u, v, testType):
     estimR = np.zeros((24983, 100))
     for i in range(0, len(u)):
         for j in range(0, len(v[0])):
-            # print(u[i], v.T[j], "vector shapes")
             dot = np.dot(u[i], v.T[j])
-            # print(dot)
             summation = summation + (dot - R[i][j])**2
             estimR [i][j] = dot
     print("mean squared error: ", summation)
@@ -312,15 +271,6 @@ def minimizeRated(d, testType):
     iters = 2000
     lambda1 = .1
     epsilon = .0002
-    #     loss = 0 
-    #     for pair in S:
-    #         loss += (np.dot(U[pair[0]], V.T[pair[1]]) - R[pair[0]][pair[1]])**2
-    #         for pair1 in S:
-    #             loss += lambda1 * np.linalg.norm(U[pair1[0]])
-    #         for pair1 in S:
-    #             loss += lambda1 * np.linalg.norm(V.T[pair1[1]])
-    #     print(loss)
-
     for i in range(0, iters):
         print(i)
         if i % 2 == 0:
@@ -363,10 +313,7 @@ def minimizeRated(d, testType):
         print(predictions, len(predictions))
         return predictions
 
-
-
 def getKaggle():
-    # predictions = SVD(2, "test")
     predictions = minimizeRated(2, "test")
     sys.stdout = open("kaggle_submission1.txt", "w")
     print("Id,Category")

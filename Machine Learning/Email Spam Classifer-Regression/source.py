@@ -249,20 +249,6 @@ def Q3():
         plt.plot(indices, risks, 'ro')
         plt.show()
 
-        #for kaggle
-        # if v == 1:
-        #     sys.stdout = open("dummy2.txt", "w")
-        #     print("Id, Category")
-        #     predictions = []
-        #     for f in range(0, len(validation)):
-        #         value = sigmoid(np.dot(w, validation[f]))
-        #         if value > .5:
-        #             prediction = 1
-        #         else: 
-        #             prediction = 0
-        #         print(str(f + 1) + ", " + str(prediction))
-        #         predictions.append(prediction)
-
 #/////////////////////////////////////////////////////////////////
 #STOCHASTIC
     # for v in range(2, 3):
@@ -357,22 +343,16 @@ def kernelLogisticRidge(X, y, validX, validY, ktype, n):
     risks = []
     valRisks = []
     rho = .1
-    # rho = 10
     alpha = .0001
     lambda1 = .001
-    # epsilon = .0001 #gave bad val poly
     epsilon = .00001 #good poly and linear, risks train 2206 with 2500 iters (poly)
-
     iterations = 3000
-
     for i in range (0, n):
         for j in range(0, n):
             if ktype == "linear":
                 kernelMatrix[i][j] = linearKernel(X[i], X[j], rho)
             else:
                 kernelMatrix[i][j] = kernel(X[i], X[j], rho)
-
-    print("reached2")
     count = 0
     for q in range(0, iterations):
         count += 1
@@ -382,36 +362,6 @@ def kernelLogisticRidge(X, y, validX, validY, ktype, n):
                 a[i] = a[i] - epsilon * float(lambda1) * a[i] + epsilon * (y[i] - sigmoid(np.dot(kernelMatrix, a)[i]))
             else: 
                 a[z] = a[z] - epsilon * float(lambda1) * a[z]
-    
-     
-    # sys.stdout = open("dummyKernel.txt", "w")
-    # for f in range(0, len(VALIDATION)):
-    #     hsum = 0
-    #     for g in range(0, len(a)):
-    #         hsum += a[g] * float(kernelMatrix[g][f])
-    #     h = sigmoid(hsum)
-    #     if h > .5:
-    #         prediction = 1
-    #     else:
-    #         prediction = 0
-    #     print(str(f + 1) + "," + str(prediction))
-
-        
-    #primal/////////////////////////////////////
-    # w = np.dot(np.transpose(X), a)
-    # sys.stdout = open("dummyKernel.txt", "w")
-    # print("Id,Category")
-    # predictions = []
-    # for f in range(0, len(VALIDATION)):
-    #     value = sigmoid(np.dot(w, VALIDATION[f]))
-    #     if value > .5:
-    #         prediction = 1
-    #     else: 
-    #         prediction = 0
-    #     print(str(f + 1) + "," + str(prediction))
-    #/////////////////////////////////////////////
-
-
         if count % 150 == 0:
             risk = kernelRisk(a, X, y, n, kernelMatrix, rho)
             risks.append(risk)
@@ -450,8 +400,6 @@ def kernelLogisticRidge(X, y, validX, validY, ktype, n):
     plt.show()
 
     return risks
-
-
 
 def crossValidateLogisticRidge():
     #crossValidation 
@@ -498,16 +446,10 @@ def crossValidateLogisticRidge():
             for j in range(0, 32):
                 validLog[i][j] = math.log(validLog[i][j] + .1, 10)
         validX = validLog
-
-        # polyRiskVal = kernelLogisticRidge(validX, validY, validX, validY, "poly", 1724) #to compute poly val risk
         polyRisks = kernelLogisticRidge(X, y, validX, validY, "poly", 3448) #1724???
         linearRisks = kernelLogisticRidge(X, y, validX, validY, "linear", 3448)
-        
-
-
 
 # Q1()
 # Q2()
 # Q3()
 # crossValidateLogisticRidge() #all of kernel parts for q3
-

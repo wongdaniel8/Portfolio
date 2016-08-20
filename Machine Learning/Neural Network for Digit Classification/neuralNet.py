@@ -31,23 +31,9 @@ cardinality = 60000
 n = len(X)
 X =  X.reshape(( n * n, -1 ))
 images = X.T #was this here during training? yes
-print("images shape 1", images.shape) #60k x 784
-
-#visualize an image!
-# one = np.reshape(images[20000],(28,28))
-# plt.imshow(one, interpolation='nearest')
-# plt.show()
-# print(LABELS[20000])
 
 #add L2 norm
 images = preprocessing.normalize(images, norm='l2')
-
-#center data
-# means = np.mean(images, 0)
-# for i in range(0, len(images)):
-#     for j in range(0, len(images[0])):
-#         images[i][j] = images[i][j] - means[j]
-
 
 #fictitious dimension for data
 xFict = np.ones((len(images), 785))
@@ -68,11 +54,7 @@ newImages = np.asarray(newImages)
 newLabels = np.asarray(newLabels)
 images = newImages
 LABELS = newLabels
-
 np.save("images.npy", images)
-
-
-
 
 TEST = io.loadmat("dataset/test")
 TESTIMAGES = TEST["test_images"]
@@ -80,11 +62,7 @@ TESTIMAGES = np.reshape(TESTIMAGES, (10000, 784))
 
 # #add L2 norm
 TESTIMAGES = preprocessing.normalize(TESTIMAGES, norm='l2')
-#center data
-# testMeans = np.mean(TESTIMAGES, 0)
-# for i in range(0, len(TESTIMAGES)):
-#     for j in range(0, len(TESTIMAGES[0])):
-#         TESTIMAGES[i][j] = TESTIMAGES[i][j] - testMeans[j]
+
 #fict dimension
 xFict = np.ones((len(TESTIMAGES), 785))
 xFict[:,:-1] = TESTIMAGES
@@ -119,12 +97,6 @@ class Neural_Network(object):
     #Derivative of sigmoid function
         return np.exp(-z) / ((1 + np.exp(-z))**2)
 
-    # def sigmoid(self, z):
-    #     return np.log(1 + np.exp(z))
-
-    # def sigmoidPrime(self, z):
-    #     return 1 / (1 + np.exp(-z))
-    
     def tanh(self, z):
         return np.tanh(z)
 
@@ -138,7 +110,6 @@ class Neural_Network(object):
         #Propagate inputs though network
         self.u = np.dot(X, self.V)
         self.h = self.tanh(self.u)
-        # self.uPrime = np.dot(hDim, self.W)
         hcopy = np.copy(self.h)
         if batch == True:
             hFict = np.ones((len(self.h), 201))
@@ -146,7 +117,6 @@ class Neural_Network(object):
             self.uPrime = np.dot(hFict, self.W)
         else:
             self.uPrime = np.dot(np.append(hcopy, [1]), self.W)
-        # self.uPrime = np.dot(self.h, self.W)
         yHat = self.sigmoid(self.uPrime) 
         return yHat
 
@@ -161,8 +131,6 @@ class Neural_Network(object):
         Compute derivative with respect to V and W for a given sample X and label y
         implement batch functionality later for batch gradient descent
         """
-        # dJdW = 201x10  # dJdV = 785x201  # delta2 = 1x201 but want 1x200???
-         # dJdV = want 785x200 
         if batch == False:
             self.yHat = self.forward(X, batch)
             delta3 = np.multiply(- (y - self.yHat), self.sigmoidPrime(self.uPrime))
@@ -256,9 +224,6 @@ class Neural_Network(object):
                 print("iteration: ", iters, "epsilon: ", epsilon, " training error rate: ", mistakes / float(len(preds)))
                 trainingErrors.append(errorRate)
                 itersList.append(iters)
-        
-        # np.save("V3.npy", self.V)
-        # np.save("W3.npy", self.W)
 
         plt.xlabel("iteration")
         plt.ylabel("cost")
@@ -275,7 +240,6 @@ class Neural_Network(object):
         plt.plot(itersList, validationAccuracies, 'ro')
         plt.show()
 
-        
         return self.V, self.W
 
     def predict(self, weights, images):
@@ -296,12 +260,6 @@ class Neural_Network(object):
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 def validate(costType):
-    
-    # validation = np.load("validation.npy")
-    # validationLabels = np.load("validationLabels.npy")
-    # training = np.load("training.npy")
-    # trainingLabels = np.load("trainingLabels.npy")
-    
     rand = []
     for i in range(0, cardinality):
         rand.append(i)
@@ -347,8 +305,6 @@ def validate(costType):
     print("error rate: ", mistakes / float(len(predictions)))
     return NN
 
-
-
 def computeGradient(NN):
     """
     for computing gradient of V
@@ -364,9 +320,6 @@ def computeGradient(NN):
         aCopy[i] = aCopy[i] - .00002
         el2 = costFunction1(NN, V, W, a, LABELS[1])
         numerator = el1 - el2
-        # print(numerator)
-        # if numerator != 0:
-        #     print("nonzero")
         grads.append(numerator / float(2 * .00001))
     return np.asarray(grads)
 
@@ -374,18 +327,13 @@ def forward1(NN, V, W, X, batch):
         #Propagate inputs though network
         u = np.dot(X, V)
         h = NN.tanh(u)
-        # print("h shape", self.h.shape)
-        
-        # self.uPrime = np.dot(hDim, self.W)
         copy = np.copy(h)
-        # print(batch)
         if batch == True:
             hFict = np.ones((len(h), 201))
             hFict[:, :-1] = copy
             uPrime = np.dot(hFict, W)
         else:
             uPrime = np.dot(np.append(copy, [1]), W)
-        # self.uPrime = np.dot(self.h, self.W)
         yHat = NN.sigmoid(uPrime) 
         return yHat
 

@@ -1,18 +1,24 @@
 # Portfolio
-AI/Machine Learning:
+AI:
 	contains Pac-Man based implementations of fundamental AI concepts, such as Bayes Nets, multiagent learning, reinforcement learning, deep searches, and Markov modelling 
-
+	
 Bioinformatics: 
 	contains a bowtie gene alignment algorithm and implementation, and also a phylogenetic tree generator using both UPGMA clustering and neighbor joining
 
 CPU:
 	contains a fully constructed and operational CPU
 
-KJumpingCube:
-	contains an implementation of the KJumpingCube game, with accompanying artificial intelligence unit
+Machine Learning:
+	contains a neural network for digit classification, a decision tree for classifying U.S. census data, and an email spam classifier
 
 SQLdatabase:
 	contains a fully constructed database that repsonds to SQL commands
+
+spark/MapReduce:
+	contains a neural network for image classification streamlined through Apache Spark clustering and Amazon EC2 Cloud Computing
+
+KJumpingCube:
+	contains an implementation of the KJumpingCube game, with accompanying artificial intelligence unit
 
 antsGame:
 	contains a game similar to the popular Plants vs Zombies game
@@ -32,11 +38,10 @@ neuralNetwork:
 schemeInterpreter:
 	contains a fully functional scheme language interpreter
 
-spark/MapReduce:
-	contains a neural network for image classification streamlined through Apache Spark clustering and Amazon EC2 Cloud Computing
-
 twitterTrends:
 	contains a geographical visualization of twitter posts and trends
+
+
 
 
 

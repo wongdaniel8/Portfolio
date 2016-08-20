@@ -27,11 +27,6 @@ hamMeans = np.mean(ham, axis=0)
 hamStds = np.std(ham, axis=0)
 spamStds = np.std(spam, axis=0)
 spamMeans = np.mean(spam, axis=0)
-# for i in range(0, len(hamMeans)):
-#     print(i, hamMeans[i])
-# print(spamMeans)
-
-
 rand = []
 tIndices = [] #indices to train with 
 for i in range(0, len(SPAMLABELS)):
@@ -42,8 +37,7 @@ SUBLABELS = [] #3879 emails
 SUBVALIDATIONLABELS = [] #1293 emails    #5172 total set
 SUBVALIDATION = []
 count = 0
-for index in rand:            #not 50 50 split between 0s and 1s, random guessing yield 30% error rate
-    # if count < 1293:
+for index in rand:           
     if count < 500:
         SUBVALIDATION.append(SPAMTRAIN[index])
         SUBVALIDATIONLABELS.append(SPAMLABELS[index])
@@ -54,35 +48,6 @@ for index in rand:            #not 50 50 split between 0s and 1s, random guessin
     count += 1
 print(len(SUBVALIDATIONLABELS), len(SUBVALIDATION))
 print(len(SUBTRAIN), len(SUBLABELS))
-
-
-# TO COMPENSATE FOR SKEW
-# tIndices = []
-# SUBTRAIN = []
-# NEWTRAINONES = []
-# NEWTRAINZEROS = []
-# SUBLABELS = []
-# index = 0
-# while len(NEWTRAINZEROS) != 1500 or len(NEWTRAINZEROS) != 1500:
-#     if SPAMLABELS[index] == 1 and len(NEWTRAINONES) == 1500:
-#         index += 1
-#         continue
-#     if SPAMLABELS[index] == 0 and len(NEWTRAINZEROS) == 1500:
-#         index += 1
-#         continue
-    
-#     if SPAMLABELS[index] == 1:
-#         NEWTRAINONES.append(SPAMTRAIN[index])
-#         SUBLABELS.append(1)
-#         tIndices.append(index)
-#         SUBTRAIN.append(SPAMTRAIN[index])
-#     if SPAMLABELS[index] == 0:
-#         NEWTRAINZEROS.append(SPAMTRAIN[index])
-#         SUBLABELS.append(0)
-#         tIndices.append(index)
-#         SUBTRAIN.append(SPAMTRAIN[index])
-#     index += 1
-
 
 
 #////////////////////////////////////////////////////////
@@ -132,7 +97,6 @@ def entropy(s, labels):
     return (-1 * onesR * float(math.log(onesR, 2))) - (zerosR * float(math.log(zerosR, 2)))
 
 def HSpecial(sl, sr, onesRLeft, onesRRight):
-    # print("HSPEC", onesRLeft, onesRRight)
     if onesRLeft == 0 or onesRRight == 0:
         return 1000000
     if onesRLeft == 1 or onesRRight == 1:
@@ -206,18 +170,12 @@ class DecisionTree:
                 hstd = hamStds[d]
                 sstd = spamStds[d]
                 candidates = np.arange(hmean - (2 * float(hstd)), hmean + (2 * float(hstd)), hstd / float(4))
-                # print("SHAPE",candidates.shape)
-                # candidates = np.concatenate((candidates, np.arange(smean - (2 * float(sstd)), smean + (2 * float(sstd)), sstd / float(4))), axis=0) #delete this one later
-                
             else:
                 hmean = poorMeans[d]
                 hstd = poorStds[d]
                 smean = richMeans[d]
                 sstd = richStds[d]
                 candidates = np.arange(hmean - (2 * float(hstd)), hmean + (2 * float(hstd)), hstd / float(4)) #better performance but slower
-                # candidates = np.concatenate((candidates, np.arange(smean - (2 * float(sstd)), smean + (2 * float(sstd)), sstd / float(4))), axis=0) #delete this one later
-                # candidates = np.arange(hmean - .2, hmean + .2, .05)
-
 
             for thresholdCandidate in candidates:
                 if thresholdCandidate <= 0:
@@ -242,83 +200,6 @@ class DecisionTree:
                     srFinal = sr
         return feature, threshold, slFinal, srFinal
 
-
-
-
-    # def segmenter(self, dtype, indices, X, labels, bagging):
-    #     lowestEntropy = float('inf')
-    #     feature = -1
-    #     threshold = .5
-    #     slFinal = []
-    #     srFinal = []
-    #     iterate = []
-    #     iters = len(X[0])
-    #     if bagging == True:
-    #         rand = []
-    #         for j in range(0, len(X[0])):
-    #             rand.append(j)
-    #         random.shuffle(rand)
-    #         # print(len(rand))
-    #         rand = rand[0: int(round(math.sqrt(len(rand))))]
-    #         iters = rand
-    #     else:
-    #         iters = []
-    #         for j in range(0, len(X[0])):
-    #             iters.append(j)
-    #     for f in iters:
-    #         # print("FFFF")
-    #         # sortedData = X.sort(axis=f)
-    #         featToIndex = {} #feature val : [indices with feat value, ]
-    #         featureValues = set()# [] #make a set???
-    #         for index in indices:
-    #             featToIndex[X[index][f]] = []
-    #             featureValues.add(X[index][f])
-    #         for index in indices:
-    #             featToIndex[X[index][f]].append(index)
-    #         featureValues = list(featureValues)
-    #         featureValues = sorted(featureValues)
-    #         # print(len(indices))
-    #         # print("length features", len(featureValues), "feature: ", f)
-    #         sortedIndices = []
-    #         for w in range(0, len(featureValues)):
-    #             indicez = featToIndex[featureValues[w]]
-    #             for q in range(0, len(indicez)):
-    #                 sortedIndices.append(indicez[q])
-
-    #         # print("BBBB")
-    #         onesLeft = 0
-    #         onesRight = 0
-    #         sl = []
-    #         sr = list(sortedIndices)
-    #         for p in range(0, len(sr)):
-    #             if labels[sr[p]] == 1:
-    #                 onesRight += 1
-    #         # print("feat lenght", len(featureValues))
-    #         # print(featureValues)
-    #         for w in range(0, len(featureValues) - 1):
-    #             # print(w)
-    #             threshCandidate = featureValues[w]
-    #             ind = sr.pop(0)
-    #             sl.append(ind)
-    #             if labels[ind] == 1:
-    #                 onesLeft += 1
-    #                 onesRight -= 1
-
-    #             # print("DDDD")
-    #             entropy = HSpecial(sl, sr, onesLeft / float(len(sl)), onesRight / float(len(sr)))
-    #             # print("EEEE")
-    #             if entropy < lowestEntropy:
-    #                 lowestEntropy = entropy
-    #                 feature = f
-    #                 threshold = threshCandidate
-    #                 slFinal = sl
-    #                 srFinal = sr
-    #             if entropy == -1000000:
-    #                 return feature, threshold, slFinal, srFinal
-    #     return feature, threshold, slFinal, srFinal
-
-    
-
     def train(self, dtype, node, indices, X, labels, iteration, bagging): #FINAL SPAM TRAIN
         """
         returns node, build tree recursively
@@ -334,13 +215,7 @@ class DecisionTree:
         leftStat ="not done"
         rightStat = "not done"
         DONE = False
-        mult = 10 #3 best so far for spam
-   
-        # if iteration > self.maxIters:
-        #     print("max reached")
-        #     leftStat = "done"
-        #     rightStat = "done"
-        #     DONE = True
+        mult = 10 
 
         segment = self.segmenter(dtype, indices, X, labels, bagging) #
         splitRule = (segment[0], segment[1])
@@ -398,7 +273,6 @@ class DecisionTree:
                 leftStat = "done"
 
         if not DONE and len(sr) <= 1000: #best is 500 so far
-            # print("right handling")
             numOnes = 0
             numZeros = 0
             for ind in sr:
@@ -447,10 +321,6 @@ class DecisionTree:
             self.train(dtype, node.right, sr, X, labels, iteration + 1, bagging)
         return 
 
-
-
-
-
     def predict(self, data):
         """
         data is a 2D array of data entries
@@ -459,7 +329,6 @@ class DecisionTree:
         predictions = []
         for entry in data:
             p = self.root
-            # while p.left != None and p.right != None:
             while(True):
                 splitRule = p.splitRule
                 feature = splitRule[0]
@@ -471,16 +340,6 @@ class DecisionTree:
                 if p.left == None and p.right == None:
                         predictions.append(p.label)
                         break
-
-            # predictions.append(p.label)
-        
-        #/////////////////////
-        # mistakes = 0
-        # for i in range(0, len(data)):
-        #     if predictions[i] != CSUBVALIDATIONLABELS[i]:
-        #         mistakes += 1
-        # print("Individual ERROR RATE: ", mistakes / float(len(data)))
-        #///////////////////
         return predictions
 
 def visualize(tree, sample):
@@ -501,25 +360,6 @@ def visualize(tree, sample):
             p = p.right
         print("splitRule: ",feature, "thresh: ", thresh, " direction: ", direction)
     print(p.label)
-
-
-
-
-
-#///////////////////////////////////////////////////
-#MAIN
-
-##establish validation and training sets for SPAM
-
-
-
-
-
-
-    
-
-
-
 
 #///////////////////////////////////////////////////
 #RANDOM FORESTS
@@ -551,10 +391,6 @@ class randomForests:
                 indices.append(rand)
             tree.train(dtype, root, indices, self.X, self.y, 0, True) #we use bagging in this case
             print("tree, ", i)
-
-            # print("individual tree prediction")
-            # tree.predict(CSUBVALIDATION)
-
             self.trees.append(tree)
     
     def predict(self, data):
@@ -599,12 +435,6 @@ def findCommonSplits(forest):
             mapping[split[0]] = []
         mapping[split[0]].append(split[1])
     print(mapping)
-
-
-
-
-
-
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 #MAIN RUNS FOR SPAM
@@ -679,29 +509,14 @@ def getKaggleSpam():
 
 def getPickleKaggleSpam():
     classifier = pickle.load(open("save.p", "rb" ))
-    
-    # predictions = classifier.predict(SUBVALIDATION)
-    # print(predictions)
-    # mistakes = 0
-    # for i in range(0, len(SUBVALIDATIONLABELS)):
-    #     if predictions[i] != SUBVALIDATIONLABELS[i]:
-    #         mistakes += 1
-    # print("VALIDATION ERROR RATE: ", mistakes / float(len(SUBVALIDATIONLABELS)))
-    
     predictions = classifier.predict(SPAMTEST)
     sys.stdout = open("spamPredictions.txt", "w")
     print("Id,Category")
     for i in range(0, len(predictions)):
         print(str(i + 1) + "," + str(predictions[i]))
 
-
-
-
-
-
 #//////////////////////////////////////////////////////////////////////////////////////
 #CENSUS DATA
-
 
 def isNumber(string):
     nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] 
@@ -709,8 +524,6 @@ def isNumber(string):
         if string[i] not in nums:
             return False
     return True
-
-
 
 raw = open("census_data/train_data.csv")
 raw2 = open("census_data/test_data.csv")
@@ -731,30 +544,6 @@ for row in reader:
 D2 = []
 for row in reader2:
     D2.append(row)
-
-#compensate for skew
-# if string == "train_data.csv":
-#     ones = []
-#     zeros = []
-#     newD = []
-#     for d in D: #newD will have length = 15792, #original had 7896 1s, 24828 0s ---> 1/3 are 1s
-#         if len(ones) == 7896 and d["label"] == '1':
-#             continue
-
-#         if len(zeros) == 12000 and d["label"] == '0':
-#             continue
-#         if d["label"] == '1':
-#             ones.append(d)
-#             newD.append(d)
-#             LABELS.append(int(d["label"]))
-#         if d["label"] == '0':
-#             zeros.append(d)
-#             newD.append(d)
-#             LABELS.append(int(d["label"]))
-#     D = newD
-#     print("ONES", len(ones))
-#     print("ZEROS", len(zeros))
-#     print("D length", len(D))
 
 #remove labels feature from set
 if "label" in D[0].keys():
@@ -843,9 +632,6 @@ for i in rand: #32724 samples in whole data set
         CSUBTRAIN.append(CENSUSTRAIN[i])
         CSUBLABELS.append(LABELS[i])
 
-
-# CENSUSTRAIN, LABELS, CSUBTRAIN, cIndices, CSUBLABELS, CSUBVALIDATION, CSUBVALIDATIONLABELS, poorMeans, poorStds, richMeans, richStds = getCensusData("train_data.csv")
-
 def validateCensus():
     classifier = DecisionTree(None)
     classifier.root = Node("", None, None, "root")
@@ -913,33 +699,22 @@ def validateCensusForest():
 
 
 def getKaggleCensus():
-    # CENSUSTEST = getCensusData("test_data.csv")[0] #"Holand-Netherlands" never comes up, so num total features is 1 less
-    # forest = randomForests(1, CENSUSTRAIN, LABELS)
-    # forest.populate("census", len(CSUBTRAIN), cIndices)
-    # predictions = forest.predict(CENSUSTEST)
     classifier = DecisionTree(None)
     classifier.root = Node("", None, None, "root")
     classifier.train("census", classifier.root, cIndices, CENSUSTRAIN, LABELS, 0, False)
     predictions = classifier.predict(CENSUSTEST)
-    
     sys.stdout = open("censusPredictions.txt", "w")
     print("Id,Category")
     for i in range(0, len(predictions)):
         print(str(i + 1) + "," + str(predictions[i]))
 
 def getKaggleCensusPickled():
-    # CENSUSTEST = getCensusData("test_data.csv")[0] #"Holand-Netherlands" never comes up, so num total features is 1 less
     classifier = pickle.load(open("save.p", "rb" ))
     predictions = classifier.predict(CENSUSTEST)
     sys.stdout = open("censusPredictions.txt", "w")
     print("Id,Category")
     for i in range(0, len(predictions)):
         print(str(i + 1) + "," + str(predictions[i]))
-
-
-
-
-
 
 # validateCensus()
 # validateCensusForest() 
@@ -949,5 +724,3 @@ def getKaggleCensusPickled():
 # validateSpam()
 # validateSpamForest()
 # getPickleKaggleSpam()
-
-

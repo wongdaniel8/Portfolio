@@ -15,48 +15,9 @@ from scipy.stats import multivariate_normal
 
 def q2Plot():
     delta = 0.025
-     
-
-    # x = np.arange(-6.0, 6.0, delta)
-    # y = np.arange(-6.0, 6.0, delta)
-    # X, Y = np.meshgrid(x, y)
-
-    # Z1a = mlab.bivariate_normal(X, Y, math.sqrt(2), 1.0, 1.0, 1.0, 0.0) #a
-    # Z1b = mlab.bivariate_normal(X, Y, math.sqrt(3), math.sqrt(2), -1.0, 2.0, 1.0) #b
-    
-    # Z1c = mlab.bivariate_normal(X, Y, 1.0, math.sqrt(2), 0, 2, 1.0)
-    # Z2c = mlab.bivariate_normal(X, Y, 1.0, math.sqrt(2), 2, 0, 1.0)
-    # # Zc = float(10.0) * (Z1c - Z2c)
-    # # Zc = mlab.bivariate_normal(X, Y, 1.0, math.sqrt(2), -2.0, 2.0, 1.0)
-
-    # Z1d = mlab.bivariate_normal(X, Y, 1.0, math.sqrt(2), 0, 2, 1.0)
-    # Z2d = mlab.bivariate_normal(X, Y, math.sqrt(3), math.sqrt(2), 2, 0, 1.0)
-    # Zd = float(10.0) * (Z1c - Z2c)
-    # # Zd = mlab.bivariate_normal(X, Y, 2.0, 2.0, -2.0, 2.0, math.sqrt(2))
-
-
-    # Z1e = mlab.bivariate_normal(X, Y, 1.0, math.sqrt(2), 1.0, 1.0, 0.0)
-    # Z2e = mlab.bivariate_normal(X, Y, math.sqrt(2), math.sqrt(2), -1.0, -1.0, 1.0)
-    # Ze = float(10.0) * (Z1c - Z2c)   
-    # # Ze = mlab.bivariate_normal(X, Y, math.sqrt(3), 2, 2.0, 2.0, 1.0)
-    
-    # # plt.figure()
-    # # CS = plt.contour(X, Y, Z1a)
-    # # plt.show()
-    # # CS = plt.contour(X, Y, Z1b)
-    # # plt.show()
-    # CS = plt.contour(X, Y, Zc)
-    # plt.clabel(CS, inline=1, fontsize=10)
-    # plt.show()
-    # CS = plt.contour(X, Y, Zd)
-    # plt.show()
-    # CS = plt.contour(X, Y, Ze)
-    # plt.show()
-
     x = np.arange(-6.0, 6.0, delta)
     y = np.arange(-6.0, 6.0, delta)
     X, Y = np.meshgrid(x, y)
-
 
     a = mlab.bivariate_normal(X, Y, 2, 1.0, 1.0, 1.0, 0.0)
     b = mlab.bivariate_normal(X, Y, 3, 2, -1.0, 2.0, 1.0)
@@ -239,7 +200,6 @@ def getPriors():
     print(priors)
 
 def getKagglePredictionsDigits():
-    # sys.stdout = open("digitsPredictions.txt", "w")
     testing = io.loadmat("data/digit_dataset/test")
     testImages = testing["test_images"]
     for i in range (0, 10000):
@@ -343,13 +303,6 @@ def computeCovMatrices(imageIndices):
         cov = np.cov(np.asarray(imageMatrix[i]), rowvar = False)
         print("shape,", cov.shape)
         covariances.append(cov)
-    
-    #####for visualization
-    # for i in range(0, len(covariances)):
-    #     cov = covariances[i]
-    #     plt.title("cov " + str(i))
-    #     plt.imshow(cov)
-    #     plt.show()
     return covariances
 
 def Q5d(sampleSize):
@@ -633,11 +586,8 @@ def Q6():
     plt.hist(scatter, bins = 9)
     plt.show()
 
-
-
 #==============================================
 #MAIN RUNS
-
 # q2Plot()
 # Q3()
 # getPriors()
@@ -646,5 +596,3 @@ def Q6():
 # getKagglePredictionsDigits()
 # spamClassifier()
 # Q6()
-
-
