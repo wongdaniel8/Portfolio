@@ -12,7 +12,7 @@ Machine Learning:
 	contains a neural network for digit classification, a decision tree for classifying U.S. census data, and an email spam classifier
 
 SQLdatabase:
-	contains a fully constructed database that repsonds to SQL commands
+	contains a fully constructed database that responds to SQL commands
 
 spark/MapReduce:
 	contains a neural network for image classification streamlined through Apache Spark clustering and Amazon EC2 Cloud Computing
@@ -42,18 +42,5 @@ twitterTrends:
 	contains a geographical visualization of twitter posts and trends
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built primarily from scratch. See the copyrights and author tags within each source.
+Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch.
 
