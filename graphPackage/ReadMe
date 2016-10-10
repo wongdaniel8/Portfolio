@@ -1,15 +1,3 @@
-Project 3: Fun with Graphs
-
-The files in this directory form a very skimpy skeleton that you are flesh
-out into a full system.  You may not add or delete public types, nor
-may you add or delete public or protected members (nested classes or
-interfaces, methods, constructors, class variables, or instance
-variables) or change their types or signatures.  Otherwise, you are
-free to add package private types and private or package private
-members to classes, and generally to change anything else.
-
-
-
 Files:
 
 Makefile:      Does standard tasks such as building the application,
