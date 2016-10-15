@@ -1,0 +1,11 @@
+Bayesian Integration Study of Social Perception Study
+@author Daniel Wong
+
+Raw data collected can be found in the .csv files
+
+Parsing scripts for the data contain the string "parser" in the file name
+parser18aug16.py is the main parser for data used in the study
+
+Data Analysis, model construction, and prediction testing occur within integration.py
+
+Graphical study results are shown within the directory "target_figures" and model predictive prowess is shown in the .png files of the root directory
