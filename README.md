@@ -9,7 +9,7 @@ CPU:
 	contains a fully constructed and operational CPU
 
 Machine Learning:
-	contains a neural network for digit classification, a decision tree for classifying U.S. census data, and an email spam classifier
+	contains a neural network for digit classification, a decision tree for classifying U.S. census data, a joke recommender and preference prediction system, and an email spam classifier
 
 SQLdatabase:
 	contains a fully constructed database that responds to SQL commands
@@ -41,6 +41,8 @@ schemeInterpreter:
 twitterTrends:
 	contains a geographical visualization of twitter posts and trends
 
+Ming Hsu Lab: 
+	Effort Based Decision Making in Hypomanic Patients
+	Bayesian Social Integration Study 
 
-Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch.
-
+Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. None of the code here should be reproduced or distributed prior to my consent. 

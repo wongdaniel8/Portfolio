@@ -1,0 +1,5 @@
+Gaussian Spam Classifier
+
+Multivariate Gaussian modeling of digits to accurately classify handwritten digits, using raw pixel values as the feature space. Employs maximum likelihood expectation using the mean and covariance matrices computed from individual digit classes. Test set classified of off posterior probabilities from training.
+
+Also contains a linear regressor to predict median home value in a given Census area.

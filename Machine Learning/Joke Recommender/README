@@ -1,0 +1,5 @@
+Joke Reccomender
+
+Able to accurately measure a user's predilection for a given joke based off of their history of joke preferences. Can be used as a way of recommending jokes in the future as an application.
+
+Uses big data methodologies like k Means and k Nearest Neighbors for prediction basis. Also implements singular value decomposition to better prediction accuracy. 

@@ -1,0 +1,3 @@
+Email Spam Classifier - Regression
+
+Uses machine learning techniques and multivariate techniques like batch and stochastic gradient descent to classify emails. Also makes use of both linear and polynomial kernels, and ridge regression. 

@@ -1,0 +1,3 @@
+Neural Network for Digit Classification
+
+Fully constructed and functional 3 layered feed forward neural network for classifying handwritten digits. Astounding accuracy ~98%. Two implementations exists, one using a tanh activation function in the hidden layer, and one using a rectified linear unit as the activation function. Trained with stochastic gradient descent.

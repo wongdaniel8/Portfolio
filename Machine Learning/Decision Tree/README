@@ -1,0 +1,5 @@
+Decision Tree
+
+Entropic splits to classify US census data, in particular to accurately predict whether a given individual makes >$50k in income based off of values of other attributes, which are listed in the header row of the .csv file in the census_data directory. 
+
+Contains both individual and concerted learners and forests.
