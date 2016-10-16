@@ -1,6 +1,10 @@
 # Portfolio
+
 AI:
-	contains Pac-Man based implementations of fundamental AI concepts, such as Bayes Nets, multiagent learning, reinforcement learning, deep searches, and Markov modelling 
+	contains Pac-Man based implementations of fundamental AI concepts, such as Bayes Nets, multiagent learning, reinforcement learning, deep searches, and Markov modelling. Basic framework provided by the Berkeley EECS department. Reproduction and distribution is forbidden, project shown in portfolio only for viewing and evaluation purposes.  
+
+Machine Learning:
+	contains a neural network for digit classification, a decision tree for classifying U.S. census data, a joke recommender and preference prediction system, and an email spam classifier
 	
 Bioinformatics: 
 	contains a bowtie gene alignment algorithm and implementation, and also a phylogenetic tree generator using both UPGMA clustering and neighbor joining
@@ -8,11 +12,11 @@ Bioinformatics:
 CPU:
 	contains a fully constructed and operational CPU
 
-Machine Learning:
-	contains a neural network for digit classification, a decision tree for classifying U.S. census data, a joke recommender and preference prediction system, and an email spam classifier
-
 SQLdatabase:
 	contains a fully constructed database that responds to SQL commands
+
+graphPackage:
+	contains a Google Maps type path finder implementation, as well as a MAKE program to compile source code
 
 spark/MapReduce:
 	contains a neural network for image classification streamlined through Apache Spark clustering and Amazon EC2 Cloud Computing
@@ -29,9 +33,6 @@ assembler:
 game2048:
 	contains an implementation of the popular 2048 game
 
-graphPackage:
-	contains a Google Maps type path finder implementation, as well as a MAKE program to compile source code
-
 neuralNetwork:
 	contains a streamlined neural network for image classification written in C
 
@@ -45,4 +46,4 @@ Ming Hsu Lab:
 	Effort Based Decision Making in Hypomanic Patients
 	Bayesian Social Integration Study 
 
-Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. None of the code here should be reproduced or distributed prior to my consent. 
+Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. The code and sources here should be neither reproduced nor distributed prior to my consent. 
