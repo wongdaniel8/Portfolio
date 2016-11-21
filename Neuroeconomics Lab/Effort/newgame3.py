@@ -1,4 +1,8 @@
-#arch -32 python newgame3.py
+"""
+@author Daniel Wong
+Effort Based Decision Making for Clinical Manic Depressive Patients
+arch -32 python newgame3.py
+"""
 # CONSTANTS
 RES             = (1200,700)	# Screen resolution for PyGame
 TOTALSQUEEZE    = 100;		
