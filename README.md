@@ -43,7 +43,7 @@ twitterTrends:
 	contains a geographical visualization of twitter posts and trends
 
 Ming Hsu Lab: 
-	Effort Based Decision Making in Hypomanic Patients
+	Effort Based Decision Making in Manic Patients
 	Bayesian Social Integration Study 
 
 Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. The code and sources here should be neither reproduced nor distributed prior to my consent. 

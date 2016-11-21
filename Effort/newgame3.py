@@ -1,4 +1,5 @@
-#arch -32 python newgame3.py
+# @author Daniel Wong
+# arch -32 python newgame3.py
 # CONSTANTS
 RES             = (1200,700)	# Screen resolution for PyGame
 TOTALSQUEEZE    = 100;		
