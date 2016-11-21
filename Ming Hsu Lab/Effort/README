@@ -1,0 +1,11 @@
+README
+
+The script is designated as newgame3.py
+It requires an MP150 Biopac system installed and corresponding dynamometer to run properly
+
+This posted version fakes the MP150 and uses random values instead of measuring grip force
+Pygame runs in 32 bit architecture, arch -32 python newgame3.py
+
+We first meausure the user's maximal squeeze value in the calibration phase,
+and then the user picks a lottery to play based off of how hard the user squeezes.
+
