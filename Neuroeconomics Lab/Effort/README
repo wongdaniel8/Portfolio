@@ -1,5 +1,9 @@
 README
 
+The following study is aimed at analyzing the behavior of manic depressive patients, along with other patients
+such as those suffering from severe anxiety, substance abuse, and schizophrenia. Effort inhibition and reward sensitivity
+are captured both through data recorded from this effort game, and through fMRI scans while they play the game. 
+
 The script is designated as newgame3.py
 It requires an MP150 Biopac system installed and corresponding dynamometer to run properly
 
@@ -9,3 +13,4 @@ Pygame runs in 32 bit architecture, arch -32 python newgame3.py
 We first meausure the user's maximal squeeze value in the calibration phase,
 and then the user picks a lottery to play based off of how hard the user squeezes.
 
+The outcomes and user decisions are recorderd in the file: _ID_choiceOutput.txt

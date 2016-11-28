@@ -1,4 +1,5 @@
 # Portfolio
+@author Daniel Wong
 
 AI:
 	contains Pac-Man based implementations of fundamental AI concepts, such as Bayes Nets, multiagent learning, reinforcement learning, deep searches, and Markov modelling. Basic framework provided by the Berkeley EECS department. Reproduction and distribution is forbidden, project shown in portfolio only for viewing and evaluation purposes.  
@@ -42,7 +43,7 @@ schemeInterpreter:
 twitterTrends:
 	contains a geographical visualization of twitter posts and trends
 
-Ming Hsu Lab: 
+Neuroeconomics Lab: 
 	Effort Based Decision Making in Manic Patients
 	Bayesian Social Integration Study 
 

@@ -1,11 +1,15 @@
 Bayesian Integration Study of Social Perception Study
-@author Daniel Wong
 
-Raw data collected can be found in the .csv files
+The goal of this study is to construct new models to integrate social perception cues such as warmth and competence
+on different racial and occupational groups. We seek to discover if there exists an undelying multivariate Gaussian 
+prior distibution for these ratings, and if we can predict joint target group perceptions based off of Bayesian modeling.
+
+Raw collected data can be found in the .csv files
 
 Parsing scripts for the data contain the string "parser" in the file name
 parser18aug16.py is the main parser for data used in the study
 
 Data Analysis, model construction, and prediction testing occur within integration.py
 
-Graphical study results are shown within the directory "target_figures" and model predictive prowess is shown in the .png files of the root directory
+Graphical study results are shown within the directory "target_figures" and model predictions 
+are shown in the .png files of the root directory

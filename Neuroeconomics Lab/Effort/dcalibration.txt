@@ -1,1 +1,1 @@
-calibration average forces: [1.0604875462066279, 1.4147180594407416, 1.4835150496662586]
+calibration average forces:
