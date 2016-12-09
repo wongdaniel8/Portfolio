@@ -5,6 +5,9 @@ on different racial and occupational groups. We seek to discover if there exists
 prior distibution for these ratings, and if we can predict joint target group perceptions based off of Bayesian modeling.
 
 Phase I:
+	
+	The user was asked to give both an overall rating for warmth and competence of a target group,
+	and also her confidence on such rating
 
 	Raw collected data can be found in the .csv files
 
@@ -17,6 +20,7 @@ Phase I:
 	are shown in the .png files of the root directory
 
 Phase II:
+
 	The paradigm of the question was changed for users to also give a min and max value for the rating in question, 
 	i.e. I am 80% confident that this person's warmth falls between LOW and HIGH, with an average of AVERAGE.
 	
