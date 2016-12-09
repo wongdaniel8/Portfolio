@@ -4,12 +4,24 @@ The goal of this study is to construct new models to integrate social perception
 on different racial and occupational groups. We seek to discover if there exists an undelying multivariate Gaussian 
 prior distibution for these ratings, and if we can predict joint target group perceptions based off of Bayesian modeling.
 
-Raw collected data can be found in the .csv files
+Phase I:
 
-Parsing scripts for the data contain the string "parser" in the file name
-parser18aug16.py is the main parser for data used in the study
+	Raw collected data can be found in the .csv files
 
-Data Analysis, model construction, and prediction testing occur within integration.py
+	Parsing scripts for the data contain the string "parser" in the file name
+	parser18aug16.py is the main parser for data used in the study
 
-Graphical study results are shown within the directory "target_figures" and model predictions 
-are shown in the .png files of the root directory
+	Data Analysis, model construction, and prediction testing occur within integration.py
+
+	Graphical study results are shown within the directory "target_figures" and model predictions 
+	are shown in the .png files of the root directory
+
+Phase II:
+	The paradigm of the question was changed for users to also give a min and max value for the rating in question, 
+	i.e. I am 80% confident that this person's warmth falls between LOW and HIGH, with an average of AVERAGE.
+	
+	Raw collected data can be found in the .csv file
+
+	Parsing and analysis can be found in phase2Parser.py
+
+	Figures for either racial or occupational group ranges can be found in the correspoding folders ___RangeFigures
