@@ -21,8 +21,7 @@ Phase I:
 
 Phase II:
 
-	The paradigm of the question was changed for users to also give a min and max value for the rating in question, 
-	i.e. I am 80% confident that this person's warmth falls between LOW and HIGH, with an average of AVERAGE.
+	The paradigm of the question was changed for users to also give a min and max value for the rating in question, i.e. I am 80% confident that this person's warmth falls between LOW and HIGH, with an average of AVERAGE.
 	
 	Raw collected data can be found in the .csv file
 
