@@ -1,5 +1,6 @@
 # Portfolio
 @author Daniel Wong
+Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. The code and sources here should be neither reproduced nor distributed prior to my consent. 
 
 AI:
 	contains Pac-Man based implementations of fundamental AI concepts, such as Bayes Nets, multiagent learning, reinforcement learning, deep searches, and Markov modelling. Basic framework provided by the Berkeley EECS department. Reproduction and distribution is forbidden, project shown in portfolio only for viewing and evaluation purposes.  
@@ -46,5 +47,3 @@ twitterTrends:
 Neuroeconomics Lab: 
 	Effort Based Decision Making in Manic Patients
 	Bayesian Social Integration Study 
-
-Within this portfolio, there exists projects that are built from a minimal framework given by the Berkeley EECS department, and projects that are built from scratch. Where marked, I attribute credit to the EECS department for providing such resources. The code and sources here should be neither reproduced nor distributed prior to my consent. 
