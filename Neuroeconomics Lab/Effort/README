@@ -1,16 +1,21 @@
 README
+Effort Package @author Daniel Wong <wongdaniel8@berkeley.edu>
 
-The following study is aimed at analyzing the behavior of manic depressive patients, along with other patients
-such as those suffering from severe anxiety, substance abuse, and schizophrenia. Effort inhibition and reward sensitivity
-are captured both through data recorded from this effort game, and through fMRI scans while they play the game. 
+Prerequisites: 
+Install python, pygame, and numpy
+behavioral sessions require an MP150 device and dynamometer
+scanning sessions require a fiber optic dynamometer that registers as a joystick for pygame
 
-The script is designated as EffortV3.py
-It requires an MP150 Biopac system installed and corresponding dynamometer to run properly
+Python Files:
+strengthTest.py - calibration script for the behavioral session
+strengthTestScanner.py - calibration script for the fMRI scanning session
+effortPractice_B.py - practice game for behavioral session
+effortPractice_MR.py - practice game for fMRI scanning session
+EffortV3-6.py - main game for behavioral session
+EffortV3-6Scanner.py - main game for fMRI scanning session
 
-This posted version fakes the MP150 and uses random values instead of measuring grip force
-Pygame runs in 32 bit architecture, arch -32 python EffortV3.py
-
-We first measure the user's maximal squeeze value in the calibration phase,
-and then the user picks a lottery to play off of key presses.
-
-The outcomes and user decisions are recorderd in the file: choiceOutputV3_SID:_ID_.txt
+Other Notes:
+Make sure the experimenter inputs the user id accurately in both the calibration and game sessions
+Do not modify existing file names or those that are generated
+If running on the command prompt terminal: "arch -32 python2 *.py"
+Do not reproduce or redistribute source code without express written consent from author

@@ -1,0 +1,2 @@
+trialNumber,trialOnset,decisionTime,choice,squeezeStart,squeezeFinish,outcomeOnset,result,avgSqueeze,maxForce
+1,19.9076468945,27.2568528652,2,30.3213429451,36.3273849487,36.8490428925,lose,24.8589607089%,44.8754181352%
